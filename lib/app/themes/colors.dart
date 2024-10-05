@@ -33,24 +33,6 @@ class PColors {
   static const blue = _Blue();
   static const grey = _Grey();
   static const purple = _Purple();
-
-  static List<Color> circleAvatarBackground = [
-    alert.green100,
-    alert.red100,
-    primary.p100,
-    secondary.s100,
-    primary.p400,
-    secondary.s400,
-  ];
-
-  static List<Color> circleAvatarText = [
-    alert.green700,
-    alert.red700,
-    primary.p700,
-    secondary.s700,
-    primary.p900,
-    secondary.s900,
-  ];
 }
 
 class _Purple {
@@ -80,18 +62,18 @@ class _Alert {
 
 class _Primary {
   const _Primary();
-  Color get p900 => ColorConverter.fromHexString('#145F64');
-  Color get p700 => ColorConverter.fromHexString('#28BFC7');
-  Color get p400 => ColorConverter.fromHexString('#93DFE3');
-  Color get p100 => ColorConverter.fromHexString('#DFF5F7');
+  Color get p30 => ColorConverter.fromHexString('#2E397B').withOpacity(0.3);
+  Color get p50 => ColorConverter.fromHexString('#2E397B').withOpacity(0.5);
+  Color get p70 => ColorConverter.fromHexString('#2E397B').withOpacity(0.7);
+  Color get p100 => ColorConverter.fromHexString('#2E397B');
 }
 
 class _Secondary {
   const _Secondary();
-  Color get s900 => ColorConverter.fromHexString('#7C6B34');
-  Color get s700 => ColorConverter.fromHexString('#F8D568');
-  Color get s400 => ColorConverter.fromHexString('#FBEAB3');
-  Color get s100 => ColorConverter.fromHexString('#FEF9E8');
+  Color get s30 => ColorConverter.fromHexString('#5C74FA').withOpacity(0.3);
+  Color get s50 => ColorConverter.fromHexString('#5C74FA').withOpacity(0.5);
+  Color get s70 => ColorConverter.fromHexString('#5C74FA').withOpacity(0.7);
+  Color get s100 => ColorConverter.fromHexString('#5C74FA');
 }
 
 class _Background {
@@ -105,6 +87,12 @@ class _Blue {
   const _Blue();
   Color get reg => ColorConverter.fromHexString('#289386');
   Color get dark => ColorConverter.fromHexString('#1A535C');
+  Color get lilBoy => ColorConverter.fromHexString('#6DA4EC');
+  Color get brandeis =>
+      ColorConverter.fromHexString('#006FFF').withOpacity(0.5);
+  Color get maya => ColorConverter.fromHexString('#6DC2EC');
+  Color get bolt =>
+      ColorConverter.fromHexString('#00AAFF').withOpacity(0.5);
 }
 
 class _Grey {
