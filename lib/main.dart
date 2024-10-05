@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:team_sphere_mobile/app/routes/router.dart';
+import 'package:team_sphere_mobile/config.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
-import 'package:team_sphere_mobile/views/screens/auth/cubit/login_cubit.dart';
-import 'package:team_sphere_mobile/views/screens/auth/login_screen.dart';
+import 'package:team_sphere_mobile/views/providers/global_state_provider.dart';
 
 void main() async {
+  String supabaseUrlKey = Config.supabaseKey;
+  String supabaseAnonKey = Config.supabaseAnonKey;
+
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     Supabase.initialize(
-      url: 'https://gqrrkswdhnhahfvgjzkj.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxcnJrc3dkaG5oYWhmdmdqemtqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyNDg1ODk3NSwiZXhwIjoyMDQwNDM0OTc1fQ.j28iabgnc4hJwOD0EC_QsV2DnLk0UYelPm6FAfU4fAU',
+      url: supabaseUrlKey,
+      anonKey: supabaseAnonKey,
     ),
     configureDependencies(),
   ]);
@@ -22,14 +25,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
-        create: (context) => getIt<AuthCubit>(),
-        child: const AuthView(),
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.light,
       ),
+    );
+
+    return GlobalStateProvider(
+      child: MaterialApp.router(
+      routerConfig: router,
+        theme: ThemeData(),
+        ),
     );
   }
 }

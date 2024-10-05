@@ -22,6 +22,7 @@ import '../../data/datasources/local/shared_preferences_datasource.dart'
 import '../../data/datasources/remote/supbase__auth_datasource.dart' as _i642;
 import '../../data/repositories/auth_repository.dart' as _i481;
 import '../../views/screens/auth/cubit/login_cubit.dart' as _i561;
+import '../../views/screens/homepage/cubit/home_cubit.dart' as _i837;
 import '../network/api_client.dart' as _i557;
 import '../network/auth_interceptor.dart' as _i908;
 import '../network/network.dart' as _i855;
@@ -39,6 +40,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
+    gh.factory<_i837.HomeCubit>(() => _i837.HomeCubit());
     gh.singleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
     gh.singleton<_i648.SessionManager>(() => _i648.SessionManager());
     await gh.lazySingletonAsync<_i460.SharedPreferences>(

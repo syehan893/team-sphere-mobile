@@ -14,18 +14,15 @@ dependencies:
   dartz: any
   device_info_plus: any
   dio: any
-  dotted_line: any
   equatable: any
   expandable: any
   expandable_page_view: any
   file_picker: any
-  fl_chart: any
   flutter:
     sdk: flutter
   flutter_bloc: any
   flutter_html: any
   flutter_launcher_icons: any
-  flutter_randomcolor: any
   flutter_secure_storage: any
   flutter_widget_from_html: any
   fresh_dio: any
@@ -34,46 +31,35 @@ dependencies:
   injectable: any
   intl: any
   jwt_decoder: any
-  logger: any
   oktoast: any
   path: any
-  percent_indicator: any
   permission_handler: any
-  pin_code_fields: any
   provider: any
   rxdart: any
   scrollable_positioned_list: any
   shared_preferences: any
   shimmer: any
   simple_moment: any
-  sliding_up_panel: any
-  smooth_page_indicator: any
   syncfusion_flutter_pdfviewer: any
   page_view_dot_indicator: any
   sprintf: any
-  time_machine: any
   url_launcher: any
-  timeline_tile: any
-  flutter_inappwebview: any
   package_info: any
-  flutter_screenutil: any
-  sentry_flutter: any
-  google_sign_in: any
-  sign_in_with_apple: any
   sentry_logging: any
   logging: any
   cupertino_icons: any
   supabase_flutter: any
+  go_router: ^14.2.8
 
 dev_dependencies:
   build_runner: any
+  flutter_gen_runner:
   change_app_package_name: any
   flutter_lints: any
   flutter_native_splash: any
   flutter_test:
     sdk: flutter
   injectable_generator: any
-  youtube_player_flutter: any
 
 flutter_icons:
   android: "launcher_icon"
@@ -98,6 +84,7 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/icons/
 
   fonts:
     - family: Montserrat Bold
