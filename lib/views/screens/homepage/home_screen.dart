@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
-import 'package:team_sphere_mobile/views/screens/auth/cubit/login_cubit.dart';
+import 'package:team_sphere_mobile/gen/assets.gen.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
+import '../screen.dart';
 import 'cubit/home_cubit.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  HomeScreenState createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
+
+  static const Map<HomeNavBar, String?> titles = {
+    HomeNavBar.home: null,
+    HomeNavBar.transaction: 'Transaction',
+    HomeNavBar.task: 'Task(s)',
+    HomeNavBar.user: null,
+  };
 
   static const List<HomeNavBar> navBars = [
     HomeNavBar.home,
@@ -17,74 +32,90 @@ class HomeScreen extends StatelessWidget {
   ];
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Body1.regular(
-      'Index 0: Home',
-    ),
-    Body1.regular(
-      'Index 1: Transaction',
-    ),
-    Body1.regular(
-      'Index 2: Task',
-    ),
-    Body1.regular(
-      'Index 3: User',
-    ),
+    HomeContent(),
+    TransactionScreen(),
+    TaskScreen(),
+    ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BaseLayout(bottomNavigationBar: BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        return BottomNavigationBar(
-          showUnselectedLabels: true,
-          selectedItemColor: PColors.primary.p400,
-          selectedLabelStyle: TextStyles.body1Regular,
-          unselectedLabelStyle:  TextStyle(
-            color: PColors.shades.loEm, 
+        return BaseLayout(
+          title: titles[state.homeNavBar],
+          useBackButton: false,
+          bottomNavigationBar: BottomNavigationBar(
+            showUnselectedLabels: true,
+            selectedItemColor: PColors.primary.p100,
+            selectedLabelStyle: TextStyles.body1Bold,
+            unselectedLabelStyle: TextStyles.body1Regular,
+            unselectedIconTheme: IconThemeData(
+              color: PColors.shades.loEm,
+            ),
+            selectedIconTheme: IconThemeData(
+              color: PColors.primary.p100,
+            ),
+            unselectedItemColor: PColors.shades.loEm,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: mapNavBarIcon(
+                    state, Assets.icons.homeIcon.path, HomeNavBar.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: mapNavBarIcon(state, Assets.icons.transactionIcon.path,
+                    HomeNavBar.transaction),
+                label: 'Transaction',
+              ),
+              BottomNavigationBarItem(
+                icon: mapNavBarIcon(
+                    state, Assets.icons.taskIcon.path, HomeNavBar.task),
+                label: 'Task',
+              ),
+              BottomNavigationBarItem(
+                icon: mapNavBarIcon(
+                    state, Assets.icons.profileIcon.path, HomeNavBar.user),
+                label: 'User',
+              ),
+            ],
+            currentIndex: navBars.indexOf(state.homeNavBar),
+            onTap: (value) {
+              _pageController.animateToPage(
+                value,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+              context.read<HomeCubit>().changeNavBar(navBars[value]);
+            },
           ),
-          selectedIconTheme: IconThemeData(
-            color: PColors.primary.p400, 
+          body: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              context.read<HomeCubit>().changeNavBar(navBars[index]);
+            },
+            physics: const ClampingScrollPhysics(),
+            children: _widgetOptions,
           ),
-          unselectedItemColor:
-              PColors.shades.loEm, 
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.data_object_outlined),
-              label: 'Transaction',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule),
-              label: 'Task',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'User',
-            ),
-          ],
-          currentIndex: navBars.indexOf(state.homeNavBar),
-          onTap: (value) {
-            context.read<HomeCubit>().changeNavBar(navBars[value]);
-          },
         );
       },
-    ), body: BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _widgetOptions[navBars.indexOf(state.homeNavBar)],
-            TextButton(
-                onPressed: () {
-                  context.read<AuthCubit>().signOut();
-                },
-                child: const Text('Kembali Ke Login'))
-          ],
-        );
-      },
-    ));
+    );
+  }
+
+  Image mapNavBarIcon(HomeState state, String imagePath, HomeNavBar navBar) {
+    return Image.asset(
+      imagePath,
+      color: state.homeNavBar == navBar
+          ? PColors.primary.p100
+          : PColors.shades.loEm,
+      width: 24,
+      height: 24,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }
