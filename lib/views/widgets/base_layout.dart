@@ -24,19 +24,20 @@ class BaseLayoutAppBar extends StatelessWidget {
   final Color? titleColor;
   final Color? backButtonColor;
 
-  const BaseLayoutAppBar.v2({
-    super.key,
-    this.title,
-    this.onBackTap,
-    this.actions,
-    this.padding = const EdgeInsets.only(top: 14, left: 20, right: 20),
-    this.systemUiOverlayStyle,
-    this.bottom,
-    this.top,
-    this.backgroundColor,
-    this.crossAxisAlignmentAppBar,
-    this.titleColor, this.backButtonColor
-  })  : titleWidget = null;
+  const BaseLayoutAppBar.v2(
+      {super.key,
+      this.title,
+      this.onBackTap,
+      this.actions,
+      this.padding = const EdgeInsets.only(top: 14, left: 20, right: 20),
+      this.systemUiOverlayStyle,
+      this.bottom,
+      this.top,
+      this.backgroundColor,
+      this.crossAxisAlignmentAppBar,
+      this.titleColor,
+      this.backButtonColor})
+      : titleWidget = null;
 
   Widget _buildTitle(BuildContext context) {
     if (title != null) {
@@ -117,9 +118,7 @@ class BaseLayoutAppBar extends StatelessWidget {
                       flex: 3,
                       child: _buildTitle(context),
                     ),
-                    if (!Util.falsyChecker(actions)) ...[
-                      ...actions!
-                    ]
+                    if (!Util.falsyChecker(actions)) ...[...actions!]
                   ],
                 ),
               ),
@@ -140,6 +139,7 @@ enum BaseLayoutFooterPosition { floating, fixed }
 
 class BaseLayout extends StatefulWidget {
   final String? title;
+  final bool? useBackButton;
   final VoidCallback? onBackTap;
   final Widget? bottomNavigationBar;
   final Widget body;
@@ -158,6 +158,7 @@ class BaseLayout extends StatefulWidget {
   const BaseLayout({
     super.key,
     this.title,
+    this.useBackButton = false,
     this.onBackTap,
     this.bottomNavigationBar,
     this.footerPadding,
@@ -171,7 +172,7 @@ class BaseLayout extends StatefulWidget {
     this.footer,
     this.footerPosition = BaseLayoutFooterPosition.fixed,
     this.appBarBackgroundColor,
-  })  : appBar = null;
+  }) : appBar = null;
 
   @override
   State<BaseLayout> createState() => _BaseLayoutState();
@@ -179,30 +180,32 @@ class BaseLayout extends StatefulWidget {
 
 class _BaseLayoutState extends State<BaseLayout> {
   Widget _buildTitle(BuildContext context) {
-    return widget.title != null ? Stack(
-      alignment: Alignment.centerLeft,
-      children: [
-        if (Navigator.canPop(context)) ...[
-          _buildBackButton(context)!,
-          Align(
-            alignment: Alignment.center,
-            child: H3(
-              widget.title ?? CommonStrings.emptyString,
-              color: PColors.shades.loEm,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ] else
-          Align(
-            alignment: Alignment.center,
-            child: H3(
-              widget.title ?? CommonStrings.emptyString,
-              color: PColors.shades.loEm,
-              overflow: TextOverflow.ellipsis,
-            ),
+    return widget.title != null
+        ? Stack(
+            alignment: Alignment.centerLeft,
+            children: [
+              if (Navigator.canPop(context) && (widget.useBackButton ?? false)) ...[
+                _buildBackButton(context)!,
+                Align(
+                  alignment: Alignment.center,
+                  child: H3(
+                    widget.title ?? CommonStrings.emptyString,
+                    color: PColors.shades.loEm,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ] else
+                Align(
+                  alignment: Alignment.center,
+                  child: H3(
+                    widget.title ?? CommonStrings.emptyString,
+                    color: PColors.shades.loEm,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+            ],
           )
-      ],
-    ) : Container();
+        : Container();
   }
 
   Widget? _buildBackButton(BuildContext context) {
@@ -227,7 +230,7 @@ class _BaseLayoutState extends State<BaseLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope (
+    return PopScope(
       onPopInvoked: (value) {
         if (widget.onBackTap != null) {
           widget.onBackTap!();
@@ -240,14 +243,17 @@ class _BaseLayoutState extends State<BaseLayout> {
         floatingActionButton: widget.floatingActionButton,
         floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
         floatingActionButtonLocation: widget.floatingActionButtonLocation,
-        appBar: widget.title != null ?  AppBar(
-          title: _buildTitle(context),
-          backgroundColor: widget.appBarBackgroundColor ?? PColors.background.b100,
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          centerTitle: false,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-        ) : null,
+        appBar: widget.title != null
+            ? AppBar(
+                title: _buildTitle(context),
+                backgroundColor:
+                    widget.appBarBackgroundColor ?? PColors.background.b100,
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                centerTitle: false,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+              )
+            : null,
         bottomNavigationBar: widget.bottomNavigationBar,
         body: Stack(
           children: [
@@ -268,10 +274,12 @@ class _BaseLayoutState extends State<BaseLayout> {
                   ),
                 ),
                 if (widget.footer != null &&
-                    widget.footerPosition == BaseLayoutFooterPosition.fixed) ...[
+                    widget.footerPosition ==
+                        BaseLayoutFooterPosition.fixed) ...[
                   Container(
                     width: double.infinity,
-                    padding: widget.footerPadding ?? const EdgeInsets.symmetric(vertical: 12),
+                    padding: widget.footerPadding ??
+                        const EdgeInsets.symmetric(vertical: 12),
                     color: PColors.background.b100,
                     child: UnconstrainedBox(child: widget.footer),
                   )
@@ -284,7 +292,8 @@ class _BaseLayoutState extends State<BaseLayout> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
-                  padding: widget.footerPadding ?? const EdgeInsets.symmetric(vertical: 12),
+                  padding: widget.footerPadding ??
+                      const EdgeInsets.symmetric(vertical: 12),
                   child: UnconstrainedBox(child: widget.footer),
                 ),
               )

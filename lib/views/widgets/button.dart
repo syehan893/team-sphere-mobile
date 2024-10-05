@@ -115,7 +115,7 @@ class Button extends StatelessWidget {
             backgroundColor: WidgetStateProperty.all(
               onTap == null
                   ? PColors.shades.disabled
-                  : backgroundColor ?? PColors.primary.p700,
+                  : backgroundColor ?? PColors.primary.p100,
             ),
             shape: shape ??
                 WidgetStateProperty.all<RoundedRectangleBorder>(

@@ -85,7 +85,7 @@ class TextInput extends StatefulWidget {
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined,
               color:
-                  !obscureText ? PColors.primary.p700 : PColors.shades.disabled,
+                  !obscureText ? PColors.primary.p100 : PColors.shades.disabled,
             ),
           ),
         );
@@ -163,7 +163,7 @@ class _TextInputState extends State<TextInput> {
     if (_hasError) {
       return PColors.alert.red700;
     } else if (_hasFocus && !widget.readOnly && widget.enabled) {
-      return PColors.primary.p700;
+      return PColors.primary.p100;
     }
     return unfocusColor ?? PColors.shades.disabled;
   }
@@ -201,7 +201,7 @@ class _TextInputState extends State<TextInput> {
         obscureText: widget.obscureText,
         initialValue: widget.initialValue,
         enabled: widget.enabled,
-        cursorColor: PColors.primary.p700,
+        cursorColor: PColors.primary.p100,
         onChanged: (v) {
           widget.onChanged?.call(v);
           String? errorMessage = widget.validator?.call(v);

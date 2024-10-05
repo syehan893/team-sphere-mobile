@@ -63,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
               context.read<AuthCubit>().signIn(email, password);
             }
           },
-          backgroundColor: PColors.alert.yellow700,
           titleColor: PColors.background.b100,
         ),
       ),

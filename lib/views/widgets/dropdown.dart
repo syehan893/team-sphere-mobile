@@ -69,7 +69,7 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
     if (_hasError) {
       return PColors.alert.red700;
     } else if (_hasFocus) {
-      return PColors.primary.p700;
+      return PColors.primary.p100;
     }
     return unfocusColor ??
         (widget.dropdownFieldTheme == DropdownFieldTheme.v1

@@ -19,7 +19,7 @@ Future<void> showCircleLoadingDialog({required BuildContext context}) {
             shape: BoxShape.circle,
           ),
           child: CircularProgressIndicator(
-            color: PColors.primary.p700,
+            color: PColors.primary.p100,
             strokeWidth: 5,
           ),
         ),

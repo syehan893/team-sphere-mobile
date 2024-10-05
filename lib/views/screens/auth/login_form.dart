@@ -24,7 +24,7 @@ class LoginForm extends StatelessWidget {
           Center(
               child: H2(
             'Hai, selamat datang lagi!',
-            color: PColors.blue.reg,
+            color: PColors.primary.p100,
           )),
           const SizedBox(height: 8),
           Center(

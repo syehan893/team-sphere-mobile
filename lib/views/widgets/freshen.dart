@@ -13,7 +13,7 @@ class Freshen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      backgroundColor: PColors.primary.p700,
+      backgroundColor: PColors.primary.p100,
       color: PColors.primary.p100,
       onRefresh: () async {
         onRefresh?.call();
