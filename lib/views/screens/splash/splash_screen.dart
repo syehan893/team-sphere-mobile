@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
-import 'package:team_sphere_mobile/views/screens/auth/cubit/login_cubit.dart';
+import 'package:team_sphere_mobile/views/cubits/login_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

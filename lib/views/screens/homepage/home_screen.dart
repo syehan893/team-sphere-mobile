@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
+import 'package:team_sphere_mobile/core/constant/animation_duration.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import '../screen.dart';
-import 'cubit/home_cubit.dart';
+import '../../cubits/home_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -83,7 +84,7 @@ class HomeScreenState extends State<HomeScreen> {
             onTap: (value) {
               _pageController.animateToPage(
                 value,
-                duration: const Duration(milliseconds: 300),
+                duration: AnimationDuration.milis300,
                 curve: Curves.easeInOut,
               );
               context.read<HomeCubit>().changeNavBar(navBars[value]);
@@ -91,10 +92,10 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           body: PageView(
             controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
             onPageChanged: (index) {
               context.read<HomeCubit>().changeNavBar(navBars[index]);
             },
-            physics: const ClampingScrollPhysics(),
             children: _widgetOptions,
           ),
         );

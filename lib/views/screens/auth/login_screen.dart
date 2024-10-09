@@ -4,7 +4,7 @@ import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/views/screens/auth/login_form.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
-import 'cubit/login_cubit.dart';
+import '../../cubits/login_cubit.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
