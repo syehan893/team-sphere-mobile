@@ -12,9 +12,21 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/dollar-coin.png
+  AssetGenImage get dollarCoin =>
+      const AssetGenImage('assets/icons/dollar-coin.png');
+
+  /// File path: assets/icons/earth-airplane.png
+  AssetGenImage get earthAirplane =>
+      const AssetGenImage('assets/icons/earth-airplane.png');
+
   /// File path: assets/icons/home_icon.png
   AssetGenImage get homeIcon =>
       const AssetGenImage('assets/icons/home_icon.png');
+
+  /// File path: assets/icons/news-paper.png
+  AssetGenImage get newsPaper =>
+      const AssetGenImage('assets/icons/news-paper.png');
 
   /// File path: assets/icons/profile_icon.png
   AssetGenImage get profileIcon =>
@@ -28,9 +40,21 @@ class $AssetsIconsGen {
   AssetGenImage get transactionIcon =>
       const AssetGenImage('assets/icons/transaction_icon.png');
 
+  /// File path: assets/icons/user-multiple-group.png
+  AssetGenImage get userMultipleGroup =>
+      const AssetGenImage('assets/icons/user-multiple-group.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [homeIcon, profileIcon, taskIcon, transactionIcon];
+  List<AssetGenImage> get values => [
+        dollarCoin,
+        earthAirplane,
+        homeIcon,
+        newsPaper,
+        profileIcon,
+        taskIcon,
+        transactionIcon,
+        userMultipleGroup
+      ];
 }
 
 class $AssetsImagesGen {
@@ -40,11 +64,20 @@ class $AssetsImagesGen {
   AssetGenImage get assetHr01 =>
       const AssetGenImage('assets/images/asset-hr-01.png');
 
+  /// File path: assets/images/location-dynamic-color.png
+  AssetGenImage get locationDynamicColor =>
+      const AssetGenImage('assets/images/location-dynamic-color.png');
+
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
+  /// File path: assets/images/tick-dynamic-color.png
+  AssetGenImage get tickDynamicColor =>
+      const AssetGenImage('assets/images/tick-dynamic-color.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [assetHr01, logo];
+  List<AssetGenImage> get values =>
+      [assetHr01, locationDynamicColor, logo, tickDynamicColor];
 }
 
 class Assets {

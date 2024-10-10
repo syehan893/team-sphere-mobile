@@ -16,10 +16,22 @@ final GoRouter router = GoRouter(
             return const LoginScreen();
           },
         ),
-         GoRoute(
+        GoRoute(
           path: 'home',
           builder: (BuildContext context, GoRouterState state) {
             return const HomeScreen();
+          },
+        ),
+        GoRoute(
+          path: 'leave',
+          builder: (BuildContext context, GoRouterState state) {
+            return const LeaveScreen();
+          },
+        ),
+        GoRoute(
+          path: 'reimbursement',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ReimbursementScreen();
           },
         ),
       ],

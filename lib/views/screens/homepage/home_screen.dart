@@ -93,9 +93,6 @@ class HomeScreenState extends State<HomeScreen> {
           body: PageView(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              context.read<HomeCubit>().changeNavBar(navBars[index]);
-            },
             children: _widgetOptions,
           ),
         );
