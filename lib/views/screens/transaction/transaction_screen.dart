@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
 
