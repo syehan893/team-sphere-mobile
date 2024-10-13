@@ -28,10 +28,10 @@ class EmployeeCubit extends Cubit<EmployeeState> {
 
   EmployeeCubit(this._repository) : super(EmployeeInitial());
 
-  Future<void> fetchEmployeeByEmail(String email) async {
+  Future<void> fetchEmployeeByEmail() async {
     emit(EmployeeLoading());
     try {
-      final employee = await _repository.getEmployeeByEmail(email);
+      final employee = await _repository.getEmployeeByEmail();
       emit(EmployeeLoaded(employee));
     } catch (e) {
       emit(EmployeeError(e.toString()));

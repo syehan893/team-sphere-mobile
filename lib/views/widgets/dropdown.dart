@@ -67,14 +67,14 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
 
   Color _getFocusColor({Color? unfocusColor}) {
     if (_hasError) {
-      return PColors.alert.red700;
+      return TSColors.alert.red700;
     } else if (_hasFocus) {
-      return PColors.primary.p100;
+      return TSColors.primary.p100;
     }
     return unfocusColor ??
         (widget.dropdownFieldTheme == DropdownFieldTheme.v1
             ? Colors.transparent
-            : PColors.shades.stroke);
+            : TSColors.shades.stroke);
   }
 
   @override
@@ -88,8 +88,8 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
           decoration: BoxDecoration(
             color: widget.fillColor ??
                 (widget.dropdownFieldTheme == DropdownFieldTheme.v1
-                    ? PColors.background.b400
-                    : PColors.background.b100),
+                    ? TSColors.background.b400
+                    : TSColors.background.b100),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _getFocusColor(),
@@ -107,14 +107,14 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
                               H1(
                                 widget.label,
                                 color: _getFocusColor(
-                                  unfocusColor: PColors.shades.hiEm,
+                                  unfocusColor: TSColors.shades.hiEm,
                                 ),
                               ),
                               Visibility(
                                 visible: widget.isRequired,
                                 child: Body1(
                                   ' *(wajib diisi)',
-                                  color: PColors.alert.red700,
+                                  color: TSColors.alert.red700,
                                 ),
                               ),
                             ],
@@ -124,14 +124,14 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
                               Label.regular(
                                 widget.label,
                                 color: _getFocusColor(
-                                  unfocusColor: PColors.shades.hiEm,
+                                  unfocusColor: TSColors.shades.hiEm,
                                 ),
                               ),
                               Visibility(
                                 visible: widget.isRequired,
                                 child: Label.regular(
                                   ' *',
-                                  color: PColors.alert.red700,
+                                  color: TSColors.alert.red700,
                                 ),
                               ),
                             ],
@@ -147,11 +147,11 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
                         // isExpanded: false,
                         validator: widget.validator,
                         style: TextStyles.subHeadlineBold.copyWith(
-                                    color: PColors.shades.loEm,
+                                    color: TSColors.shades.loEm,
                                   ),
                         hint:  SubHeadline.regular(
                                 widget.hintText ?? CommonStrings.emptyString,
-                                color: PColors.shades.stroke,
+                                color: TSColors.shades.stroke,
                               ),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -162,7 +162,7 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
                           contentPadding: EdgeInsets.zero,
                           // labelStyle: _defaultStyle,
                           fillColor:
-                              widget.fillColor ?? PColors.background.b400,
+                              widget.fillColor ?? TSColors.background.b400,
                           // label: Text(label),
                           filled: true,
                           // errorBorder: _errorBorder,
@@ -192,7 +192,7 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
                   ],
                 ),
               ),
-              Icon(Icons.arrow_drop_down, color: PColors.shades.disabled)
+              Icon(Icons.arrow_drop_down, color: TSColors.shades.disabled)
             ],
           ),
         ),
@@ -202,7 +202,7 @@ class _DropdownFieldState<T> extends State<DropdownField<T>> {
             padding: const EdgeInsets.only(left: 16.0, top: 4),
             child: Body1(
               widget.validator?.call(_value) ?? CommonStrings.emptyString,
-              color: PColors.alert.red700,
+              color: TSColors.alert.red700,
             ),
           ),
         )

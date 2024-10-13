@@ -28,6 +28,10 @@ class $AssetsIconsGen {
   AssetGenImage get newsPaper =>
       const AssetGenImage('assets/icons/news-paper.png');
 
+  /// File path: assets/icons/notifications.png
+  AssetGenImage get notifications =>
+      const AssetGenImage('assets/icons/notifications.png');
+
   /// File path: assets/icons/profile_icon.png
   AssetGenImage get profileIcon =>
       const AssetGenImage('assets/icons/profile_icon.png');
@@ -40,6 +44,9 @@ class $AssetsIconsGen {
   AssetGenImage get transactionIcon =>
       const AssetGenImage('assets/icons/transaction_icon.png');
 
+  /// File path: assets/icons/union.png
+  AssetGenImage get union => const AssetGenImage('assets/icons/union.png');
+
   /// File path: assets/icons/user-multiple-group.png
   AssetGenImage get userMultipleGroup =>
       const AssetGenImage('assets/icons/user-multiple-group.png');
@@ -50,9 +57,11 @@ class $AssetsIconsGen {
         earthAirplane,
         homeIcon,
         newsPaper,
+        notifications,
         profileIcon,
         taskIcon,
         transactionIcon,
+        union,
         userMultipleGroup
       ];
 }
@@ -64,6 +73,10 @@ class $AssetsImagesGen {
   AssetGenImage get assetHr01 =>
       const AssetGenImage('assets/images/asset-hr-01.png');
 
+  /// File path: assets/images/calendar.png
+  AssetGenImage get calendar =>
+      const AssetGenImage('assets/images/calendar.png');
+
   /// File path: assets/images/location-dynamic-color.png
   AssetGenImage get locationDynamicColor =>
       const AssetGenImage('assets/images/location-dynamic-color.png');
@@ -71,13 +84,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
+  /// File path: assets/images/office.png
+  AssetGenImage get office => const AssetGenImage('assets/images/office.png');
+
   /// File path: assets/images/tick-dynamic-color.png
   AssetGenImage get tickDynamicColor =>
       const AssetGenImage('assets/images/tick-dynamic-color.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [assetHr01, locationDynamicColor, logo, tickDynamicColor];
+  List<AssetGenImage> get values => [
+        assetHr01,
+        calendar,
+        locationDynamicColor,
+        logo,
+        office,
+        tickDynamicColor
+      ];
 }
 
 class Assets {

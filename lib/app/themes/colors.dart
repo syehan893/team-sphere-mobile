@@ -23,7 +23,7 @@ class ColorConverter {
   }
 }
 
-class PColors {
+class TSColors {
   static const shades = _Shades();
   static const alert = _Alert();
   static const primary = _Primary();

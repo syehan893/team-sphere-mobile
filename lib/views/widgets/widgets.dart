@@ -9,3 +9,4 @@ export 'text_input.dart';
 export 'calendar.dart';
 export 'freshen.dart';
 export 'base_layout.dart';
+export 'avatar.dart';

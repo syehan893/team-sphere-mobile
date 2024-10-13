@@ -10,7 +10,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 24,
     height: 36 / 24,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle h2 = TextStyle(
@@ -19,7 +19,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 20,
     height: 30 / 20,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle h3 = TextStyle(
@@ -28,7 +28,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 16,
     height: 24 / 16,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle subHeadlineBold = TextStyle(
@@ -37,7 +37,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 14,
     height: 20 / 14,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle subHeadlineRegular = TextStyle(
@@ -46,7 +46,7 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     fontSize: 14,
     height: 20 / 14,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle buttonBig = TextStyle(
@@ -55,7 +55,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 16,
     height: 24 / 16,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle buttonSmall = TextStyle(
@@ -64,7 +64,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 12,
     height: 18 / 12,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle body1Bold = TextStyle(
@@ -73,7 +73,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 12,
     height: 18 / 12,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
   static TextStyle body1Regular = TextStyle(
     fontFamily: FontFamily.montserrat,
@@ -81,7 +81,7 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     fontSize: 12,
     height: 18 / 12,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle labelBold = TextStyle(
@@ -90,7 +90,7 @@ class TextStyles {
     fontWeight: FontWeight.w700,
     fontSize: 10,
     height: 16 / 10,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 
   static TextStyle labelRegular = TextStyle(
@@ -99,6 +99,6 @@ class TextStyles {
     fontWeight: FontWeight.w400,
     fontSize: 10,
     height: 16 / 10,
-    color: PColors.shades.hiEm,
+    color: TSColors.shades.hiEm,
   );
 }

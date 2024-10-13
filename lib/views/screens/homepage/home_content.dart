@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/app/themes/colors.dart';
+import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
@@ -16,44 +19,23 @@ class HomeContent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Selamat pagi,',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      'Muhammad Syehan',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
+                    SubHeadline.regular('Selamat pagi,',
+                        color: TSColors.primary.p100),
+                    H1('Muhammad Syehan', color: TSColors.primary.p100),
                   ],
                 ),
                 CircleAvatar(
-                  backgroundColor: Colors.blue[100],
-                  child: const Icon(Icons.notifications, color: Colors.blue),
+                  backgroundColor: TSColors.secondary.s30,
+                  child: Image.asset(Assets.icons.notifications.path,
+                      color: TSColors.primary.p100, height: 20, width: 20),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Wednesday, 23 Jan 2024',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text('10:20 pm'),
-                ],
-              ),
-            ),
+            const RollCallCard(),
             const SizedBox(height: 20),
             const Text('Features',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -61,14 +43,16 @@ class HomeContent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildFeatureIcon(Icons.calendar_today, 'Leave', () {
+                _buildFeatureIcon(Assets.icons.earthAirplane.path, 'Leave', () {
                   context.go('/leave');
                 }),
-                _buildFeatureIcon(Icons.monetization_on, 'Reimburse', () {
-                  context.go('/reimbursement');
+                _buildFeatureIcon(Assets.icons.dollarCoin.path, 'Reimburse',
+                    () {
+                  context.go('/reimburse');
                 }),
-                _buildFeatureIcon(Icons.people, 'Member', () {}),
-                _buildFeatureIcon(Icons.article, 'News', () {}),
+                _buildFeatureIcon(
+                    Assets.icons.userMultipleGroup.path, 'Member', () {}),
+                _buildFeatureIcon(Assets.icons.newsPaper.path, 'News', () {}),
               ],
             ),
             const SizedBox(height: 20),
@@ -80,60 +64,93 @@ class HomeContent extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Image.asset(Assets.images.assetHr01.path, fit: BoxFit.cover),
+              child:
+                  Image.asset(Assets.images.assetHr01.path, fit: BoxFit.cover),
             ),
             const SizedBox(height: 20),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Colleagues',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Text('See All', style: TextStyle(color: Colors.blue)),
+                const H3('Colleagues'),
+                Body1.regular('See All',
+                    color: TSColors.primary.p100, fontSize: 16),
               ],
             ),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.yellow,
-                    child: Text('MS'),
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Muhammad Syehan'),
-                      Text('Swipe to Check In',
-                          style: TextStyle(color: Colors.grey)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            _buildCollaguesCard(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFeatureIcon(IconData icon, String label, VoidCallback onTap) {
+  Container _buildCollaguesCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: TSColors.secondary.s70),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: const Row(
+        children: [
+          EmployeeAvatar(email: 'syehan@gmail.com', radius: 24),
+          SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              H3('Muhammad Syehan'),
+              Body1.regular('Software Engineer'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureIcon(String path, String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
           CircleAvatar(
-            backgroundColor: Colors.blue[50],
-            child: Icon(icon, color: Colors.blue),
+            minRadius: 35,
+            backgroundColor: TSColors.secondary.s30,
+            child: Image.asset(path, height: 35, width: 35),
           ),
           const SizedBox(height: 5),
-          Text(label),
+          Body1.bold(label),
+        ],
+      ),
+    );
+  }
+}
+
+class RollCallCard extends StatelessWidget {
+  const RollCallCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: TSColors.secondary.s30,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Image.asset(Assets.images.locationDynamicColor.path,
+              height: 64, width: 64),
+          const SizedBox(width: 21),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              H3('Wednesday, 23 Jan 2024'),
+              H3('10:20 pm'),
+            ],
+          ),
         ],
       ),
     );

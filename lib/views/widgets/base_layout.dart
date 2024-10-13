@@ -50,7 +50,7 @@ class BaseLayoutAppBar extends StatelessWidget {
               alignment: Alignment.center,
               child: H3(
                 title ?? '',
-                color: titleColor ?? PColors.shades.loEm,
+                color: titleColor ?? TSColors.shades.loEm,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -60,7 +60,7 @@ class BaseLayoutAppBar extends StatelessWidget {
               child: Expanded(
                   child: H3(
                 title ?? '',
-                color: titleColor ?? PColors.shades.loEm,
+                color: titleColor ?? TSColors.shades.loEm,
                 overflow: TextOverflow.ellipsis,
               )),
             )
@@ -86,7 +86,7 @@ class BaseLayoutAppBar extends StatelessWidget {
         iconSize: 18,
         icon: Icon(
           Icons.arrow_back_ios,
-          color: backButtonColor ?? PColors.shades.loEm,
+          color: backButtonColor ?? TSColors.shades.loEm,
         ),
       );
     }
@@ -98,7 +98,7 @@ class BaseLayoutAppBar extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: systemUiOverlayStyle ?? SystemUiOverlayStyle.dark,
       child: Container(
-        color: backgroundColor ?? PColors.background.b100,
+        color: backgroundColor ?? TSColors.background.b100,
         alignment: Alignment.bottomLeft,
         child: SafeArea(
           bottom: false,
@@ -190,7 +190,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                   alignment: Alignment.center,
                   child: H3(
                     widget.title ?? CommonStrings.emptyString,
-                    color: PColors.shades.loEm,
+                    color: TSColors.shades.loEm,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -199,7 +199,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                   alignment: Alignment.center,
                   child: H3(
                     widget.title ?? CommonStrings.emptyString,
-                    color: PColors.shades.loEm,
+                    color: TSColors.shades.loEm,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )
@@ -221,7 +221,7 @@ class _BaseLayoutState extends State<BaseLayout> {
         iconSize: 18,
         icon: Icon(
           Icons.arrow_back_ios,
-          color: PColors.shades.loEm,
+          color: TSColors.shades.loEm,
         ),
       );
     }
@@ -239,7 +239,7 @@ class _BaseLayoutState extends State<BaseLayout> {
         }
       },
       child: Scaffold(
-        backgroundColor: widget.backgroundColor ?? PColors.background.b100,
+        backgroundColor: widget.backgroundColor ?? TSColors.background.b100,
         floatingActionButton: widget.floatingActionButton,
         floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
         floatingActionButtonLocation: widget.floatingActionButtonLocation,
@@ -247,7 +247,7 @@ class _BaseLayoutState extends State<BaseLayout> {
             ? AppBar(
                 title: _buildTitle(context),
                 backgroundColor:
-                    widget.appBarBackgroundColor ?? PColors.background.b100,
+                    widget.appBarBackgroundColor ?? TSColors.background.b100,
                 automaticallyImplyLeading: false,
                 elevation: 0,
                 centerTitle: false,
@@ -280,7 +280,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                     width: double.infinity,
                     padding: widget.footerPadding ??
                         const EdgeInsets.symmetric(vertical: 12),
-                    color: PColors.background.b100,
+                    color: TSColors.background.b100,
                     child: UnconstrainedBox(child: widget.footer),
                   )
                 ]

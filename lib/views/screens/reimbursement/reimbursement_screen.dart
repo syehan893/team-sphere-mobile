@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 class ReimbursementScreen extends StatefulWidget {
   const ReimbursementScreen({super.key});
@@ -14,15 +15,15 @@ class ReimbursementPageState extends State<ReimbursementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => context.go('/home'),
-        ),
-        title: const Text('Reimburse', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        elevation: 0,
+    return BaseLayout(
+      title: 'Reimburse',
+      useBackButton: true,
+      onBackTap: () => context.go('/home'),
+       floatingActionButton: Button(
+        title: 'Request Reimburse',
+        onTap: () {
+          context.go('/reimburse/request');
+        },
       ),
       body: Column(
         children: [

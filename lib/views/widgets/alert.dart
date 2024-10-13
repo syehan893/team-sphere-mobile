@@ -20,22 +20,22 @@ class Alert extends StatelessWidget {
     super.key,
     required this.icon,
     required this.message,
-  })  : color = PColors.alert.red100,
-        contentColor = PColors.alert.red700;
+  })  : color = TSColors.alert.red100,
+        contentColor = TSColors.alert.red700;
 
   Alert.green({
     super.key,
     required this.icon,
     required this.message,
-  })  : color = PColors.alert.green100,
-        contentColor = PColors.alert.green700;
+  })  : color = TSColors.alert.green100,
+        contentColor = TSColors.alert.green700;
 
   Alert.yellow({
     super.key,
     required this.icon,
     required this.message,
-  })  : color = PColors.alert.yellow100,
-        contentColor = PColors.alert.yellow700;
+  })  : color = TSColors.alert.yellow100,
+        contentColor = TSColors.alert.yellow700;
 
   @override
   Widget build(BuildContext context) {

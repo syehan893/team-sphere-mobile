@@ -7,7 +7,7 @@ Future<void> showCircleLoadingDialog({required BuildContext context}) {
   return showDialog(
     context: context,
     barrierDismissible: false,
-    barrierColor: PColors.shades.hiEm.withOpacity(0.3),
+    barrierColor: TSColors.shades.hiEm.withOpacity(0.3),
     builder: (context) {
       return Center(
         child: Container(
@@ -19,7 +19,7 @@ Future<void> showCircleLoadingDialog({required BuildContext context}) {
             shape: BoxShape.circle,
           ),
           child: CircularProgressIndicator(
-            color: PColors.primary.p100,
+            color: TSColors.primary.p100,
             strokeWidth: 5,
           ),
         ),
@@ -49,7 +49,7 @@ Future<T?> showSheet<T>(
       ),
     ),
     isScrollControlled: isScrollControlled ?? false,
-    backgroundColor: PColors.background.b100,
+    backgroundColor: TSColors.background.b100,
     enableDrag: enableDrag ?? true,
     isDismissible:isDismissible ?? true ,
     constraints: BoxConstraints(
@@ -66,7 +66,7 @@ Future<T?> showSheet<T>(
             ),
             child: Container(
               padding: contentPadding,
-              color: backgroundColor ?? PColors.background.b100,
+              color: backgroundColor ?? TSColors.background.b100,
               width: double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -77,7 +77,7 @@ Future<T?> showSheet<T>(
                     margin: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: PColors.shades.stroke,
+                      color: TSColors.shades.stroke,
                     ),
                   ) :Container(),
                   if (child != null) Flexible(child: child),
@@ -186,9 +186,9 @@ Future<void> showAlertDialog(
             mainAxisSize: MainAxisSize.min,
             children: [
               SubHeadline.bold(title,
-                  color: PColors.shades.loEm, textAlign: TextAlign.center),
+                  color: TSColors.shades.loEm, textAlign: TextAlign.center),
               Body1.regular(description,
-                  color: PColors.shades.loEm, textAlign: TextAlign.center),
+                  color: TSColors.shades.loEm, textAlign: TextAlign.center),
               if (buttons.isNotEmpty) ...[
                 const Divider(thickness: 1),
                 SizedBox(
@@ -222,8 +222,8 @@ Future<void> showLinearProgressDialog(BuildContext context,
               Body1(title),
               const SizedBox(height: 8),
               LinearProgressIndicator(
-                color: PColors.alert.green700,
-                backgroundColor: PColors.alert.green100,
+                color: TSColors.alert.green700,
+                backgroundColor: TSColors.alert.green100,
               ),
             ],
           ),

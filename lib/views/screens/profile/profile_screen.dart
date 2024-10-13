@@ -1,80 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:team_sphere_mobile/app/themes/themes.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
+
+import '../../cubits/cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage('assets/profile_picture.jpg'),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Muhammad Syehan',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Software Engineer',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement edit profile functionality
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo[800],
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+    return BlocBuilder<EmployeeCubit, EmployeeState>(
+      builder: (context, state) {
+        if (state is EmployeeLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is EmployeeLoaded) {
+          context.read<EmployeeAvatarCubit>().loadAvatar(state.employee.email);
+
+          return Padding(
+            padding: const EdgeInsets.only(top:40),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    EmployeeAvatar(email: state.employee.email),
+                    const SizedBox(height: 16),
+                    Body1.bold(
+                      '${state.employee.firstName} ${state.employee.lastName}',
+                    ),
+                    const SizedBox(height: 8),
+                    Body1.regular(state.employee.jobTitle),
+                    const SizedBox(height: 24),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TSColors.primary.p100,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Body1.bold('Edit Profile',
+                          color: Colors.white, fontSize: 14),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildOptionTile(Icons.person, 'My Profile', () {}),
+                    _buildOptionTile(
+                        Icons.description, 'Terms & Condition', () {}),
+                    _buildOptionTile(Icons.privacy_tip, 'Privacy Policy', () {}),
+                    _buildOptionTile(Icons.logout, 'Logout', () {
+                      context.read<AuthCubit>().signOut();
+                    }, isLogout: true),
+                  ],
                 ),
               ),
-              child: const Text('Edit Profile'),
             ),
-            const SizedBox(height: 24),
-            _buildOptionTile(Icons.person, 'My Profile', () {
-              // TODO: Navigate to My Profile page
-            }),
-            _buildOptionTile(Icons.description, 'Terms & Condition', () {
-              // TODO: Navigate to Terms & Condition page
-            }),
-            _buildOptionTile(Icons.privacy_tip, 'Privacy Policy', () {
-              // TODO: Navigate to Privacy Policy page
-            }),
+          );
+        }
+        return Center(
+            child: Column(
+          children: [
+            const Body1.bold('Something went wrong'),
             _buildOptionTile(Icons.logout, 'Logout', () {
-              // TODO: Implement logout functionality
+              context.read<AuthCubit>().signOut();
             }, isLogout: true),
           ],
-        ),
-      ),
+        ));
+      },
     );
   }
 
   Widget _buildOptionTile(IconData icon, String title, VoidCallback onTap,
       {bool isLogout = false}) {
     return ListTile(
+      hoverColor: TSColors.primary.p50,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: isLogout ? Colors.red[50] : Colors.grey[200],
+          color: isLogout ? TSColors.alert.red100 : Colors.grey[200],
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(
           icon,
-          color: isLogout ? Colors.red : Colors.black,
+          color: isLogout ? TSColors.alert.red700 : Colors.black,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: isLogout ? Colors.red : Colors.black,
+          color: isLogout ? TSColors.alert.red700 : Colors.black,
           fontWeight: FontWeight.w500,
         ),
       ),

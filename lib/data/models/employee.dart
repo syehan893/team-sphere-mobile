@@ -37,7 +37,7 @@ class Employee extends Equatable {
       hireDate: json['hire_date'],
       jobTitle: json['job_title'],
       departmentId: json['department_id'],
-      managerId: json['manager_id'],
+      managerId: json['manager_id'] ?? '',
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 class LeaveScreen extends StatefulWidget {
   const LeaveScreen({super.key});
@@ -13,24 +14,26 @@ class LeaveScreenState extends State<LeaveScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => context.go('/home'),
-        ),
-        title: const Text('Leave', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        elevation: 0,
+    return BaseLayout(
+      title: 'Leave',
+      useBackButton: true,
+      onBackTap: () {
+        context.go('/home');
+      },
+      floatingActionButton: Button(
+        title: 'Request Leave',
+        onTap: () {
+          context.go('/leave/request');
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-              _buildLeaveCircle(),
-              const SizedBox(height: 20),
-              _buildLegend(),
-              const SizedBox(height: 20),
+            _buildLeaveCircle(),
+            const SizedBox(height: 20),
+            _buildLegend(),
+            const SizedBox(height: 20),
             _buildTabBar(),
             const SizedBox(height: 20),
             Expanded(
@@ -58,13 +61,17 @@ class LeaveScreenState extends State<LeaveScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: !showPendingRequests ? Colors.indigo[800] : Colors.transparent,
+                  color: !showPendingRequests
+                      ? Colors.indigo[800]
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Text(
                   'My Leave(s)',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: !showPendingRequests ? Colors.white : Colors.black),
+                  style: TextStyle(
+                      color:
+                          !showPendingRequests ? Colors.white : Colors.black),
                 ),
               ),
             ),
@@ -75,13 +82,16 @@ class LeaveScreenState extends State<LeaveScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: showPendingRequests ? Colors.indigo[800] : Colors.transparent,
+                  color: showPendingRequests
+                      ? Colors.indigo[800]
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Text(
                   'Pending Request',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: showPendingRequests ? Colors.white : Colors.black),
+                  style: TextStyle(
+                      color: showPendingRequests ? Colors.white : Colors.black),
                 ),
               ),
             ),
@@ -130,7 +140,8 @@ class LeaveScreenState extends State<LeaveScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(name,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   Text(date, style: const TextStyle(color: Colors.grey)),
                 ],
               ),

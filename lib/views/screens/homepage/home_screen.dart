@@ -35,7 +35,7 @@ class HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeContent(),
     TransactionScreen(),
-    TaskScreen(),
+    OrganizationStructureScreen(),
     ProfileScreen(),
   ];
 
@@ -48,16 +48,16 @@ class HomeScreenState extends State<HomeScreen> {
           useBackButton: false,
           bottomNavigationBar: BottomNavigationBar(
             showUnselectedLabels: true,
-            selectedItemColor: PColors.primary.p100,
+            selectedItemColor: TSColors.primary.p100,
             selectedLabelStyle: TextStyles.body1Bold,
             unselectedLabelStyle: TextStyles.body1Regular,
             unselectedIconTheme: IconThemeData(
-              color: PColors.shades.loEm,
+              color: TSColors.shades.loEm,
             ),
             selectedIconTheme: IconThemeData(
-              color: PColors.primary.p100,
+              color: TSColors.primary.p100,
             ),
-            unselectedItemColor: PColors.shades.loEm,
+            unselectedItemColor: TSColors.shades.loEm,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: mapNavBarIcon(
@@ -104,8 +104,8 @@ class HomeScreenState extends State<HomeScreen> {
     return Image.asset(
       imagePath,
       color: state.homeNavBar == navBar
-          ? PColors.primary.p100
-          : PColors.shades.loEm,
+          ? TSColors.primary.p100
+          : TSColors.shades.loEm,
       width: 24,
       height: 24,
     );

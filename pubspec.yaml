@@ -45,11 +45,11 @@ dependencies:
   sprintf: any
   url_launcher: any
   package_info: any
-  sentry_logging: any
-  logging: any
+  logger: any
   cupertino_icons: any
   supabase_flutter: any
-  go_router: ^14.2.8
+  go_router: any
+  flutter_fancy_tree_view: ^1.6.0
 
 dev_dependencies:
   build_runner: any

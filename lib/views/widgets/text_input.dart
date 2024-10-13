@@ -85,7 +85,7 @@ class TextInput extends StatefulWidget {
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined,
               color:
-                  !obscureText ? PColors.primary.p100 : PColors.shades.disabled,
+                  !obscureText ? TSColors.primary.p100 : TSColors.shades.disabled,
             ),
           ),
         );
@@ -120,7 +120,7 @@ class TextInput extends StatefulWidget {
           ),
           child: SubHeadline.bold(
             text,
-            color: PColors.shades.loEm,
+            color: TSColors.shades.loEm,
           ),
         ),
         suffix = null;
@@ -161,11 +161,11 @@ class _TextInputState extends State<TextInput> {
 
   Color _getFocusColor({Color? unfocusColor}) {
     if (_hasError) {
-      return PColors.alert.red700;
+      return TSColors.alert.red700;
     } else if (_hasFocus && !widget.readOnly && widget.enabled) {
-      return PColors.primary.p100;
+      return TSColors.primary.p100;
     }
-    return unfocusColor ?? PColors.shades.disabled;
+    return unfocusColor ?? TSColors.shades.disabled;
   }
 
   OutlineInputBorder get _errorBorder => OutlineInputBorder(
@@ -179,14 +179,14 @@ class _TextInputState extends State<TextInput> {
       );
 
   TextStyle get _defaultStyle => TextStyles.body1Regular.copyWith(
-        color: PColors.shades.disabled,
+        color: TSColors.shades.disabled,
       );
   TextStyle get prefixStyle => TextStyles.subHeadlineBold.copyWith(
-        color: PColors.shades.stroke,
+        color: TSColors.shades.stroke,
       );
 
   TextStyle get _errorStyle => _defaultStyle.copyWith(
-        color: PColors.alert.red700,
+        color: TSColors.alert.red700,
       );
 
   Widget get _textField => TextFormField(
@@ -201,7 +201,7 @@ class _TextInputState extends State<TextInput> {
         obscureText: widget.obscureText,
         initialValue: widget.initialValue,
         enabled: widget.enabled,
-        cursorColor: PColors.primary.p100,
+        cursorColor: TSColors.primary.p100,
         onChanged: (v) {
           widget.onChanged?.call(v);
           String? errorMessage = widget.validator?.call(v);
@@ -211,17 +211,17 @@ class _TextInputState extends State<TextInput> {
           });
         },
         style: TextStyles.subHeadlineRegular.copyWith(
-          color: PColors.shades.loEm,
+          color: TSColors.shades.loEm,
         ),
         decoration: InputDecoration(
           prefixIcon: widget.prefix,
           prefixStyle: prefixStyle.copyWith(
-            color: PColors.shades.loEm,
+            color: TSColors.shades.loEm,
           ),
           prefixIconConstraints:
               const BoxConstraints(minHeight: 2, minWidth: 2),
           fillColor: widget.enabled
-              ? widget.fillColor ?? PColors.background.b100
+              ? widget.fillColor ?? TSColors.background.b100
               : Colors.transparent,
           // hintText: widget.hintText,
           hintStyle: _defaultStyle,
@@ -284,7 +284,7 @@ class _TextInputState extends State<TextInput> {
                 padding: const EdgeInsets.only(left: 16.0, top: 4),
                 child: Label.regular(
                   widget.validator?.call(_text) ?? CommonStrings.emptyString,
-                  color: PColors.alert.red700,
+                  color: TSColors.alert.red700,
                 ),
               ),
             )

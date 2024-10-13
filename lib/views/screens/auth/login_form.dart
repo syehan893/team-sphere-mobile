@@ -24,14 +24,14 @@ class LoginForm extends StatelessWidget {
           Center(
               child: H2(
             'Hai, selamat datang lagi!',
-            color: PColors.primary.p100,
+            color: TSColors.primary.p100,
           )),
           const SizedBox(height: 8),
           Center(
               child: SubHeadline.regular(
             'Ayo mulai pengalamanmu dengan Team Sphere',
             textAlign: TextAlign.center,
-            color: PColors.shades.loEm,
+            color: TSColors.shades.loEm,
           )),
           const SizedBox(height: 20),
           TextInput(

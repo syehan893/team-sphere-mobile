@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onBackTap: () {
         Navigator.pop(context);
       },
-      backgroundColor: PColors.background.b100,
+      backgroundColor: TSColors.background.b100,
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.status == AuthStatus.authenticated) {
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context.read<AuthCubit>().signIn(email, password);
             }
           },
-          titleColor: PColors.background.b100,
+          titleColor: TSColors.background.b100,
         ),
       ),
     );

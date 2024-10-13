@@ -18,17 +18,17 @@ class Empty extends StatelessWidget {
         Icon(
           icons ?? Icons.supervised_user_circle_outlined,
           size: 53,
-          color: PColors.grey.gainsboro,
+          color: TSColors.grey.gainsboro,
         ),
         const SizedBox(
           height: 29,
         ),
-        H2(title, color: PColors.shades.disabled, textAlign: TextAlign.center),
+        H2(title, color: TSColors.shades.disabled, textAlign: TextAlign.center),
         const SizedBox(
           height: 8,
         ),
         Body1.regular(subtitle ?? CommonStrings.emptyString,
-            color: PColors.shades.disabled, textAlign: TextAlign.center),
+            color: TSColors.shades.disabled, textAlign: TextAlign.center),
       ],
     );
   }

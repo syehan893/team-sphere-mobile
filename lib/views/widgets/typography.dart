@@ -10,6 +10,7 @@ enum VariantStyle { bold, regular }
 abstract class Typography extends StatelessWidget {
   final Color? color;
   final String text;
+  final double? fontSize;
   final TextOverflow? overflow;
   final TextAlign? textAlign;
   final Variant variant;
@@ -19,6 +20,7 @@ abstract class Typography extends StatelessWidget {
   const Typography(
     this.text, {
     super.key,
+    this.fontSize,
     this.color,
     this.overflow,
     this.textAlign,
@@ -210,6 +212,7 @@ class Body1 extends Typography {
     super.overflow,
     super.textAlign,
     super.variant,
+    super.fontSize,
   });
 
   const Body1.bold(
@@ -218,6 +221,7 @@ class Body1 extends Typography {
     super.color,
     super.overflow,
     super.textAlign,
+    super.fontSize,
   }) : super(variantStyle: VariantStyle.bold);
 
   const Body1.regular(
@@ -226,13 +230,14 @@ class Body1 extends Typography {
     super.color,
     super.overflow,
     super.textAlign,
+    super.fontSize,
   }) : super(variantStyle: VariantStyle.regular);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: getTextStyle().copyWith(color: color),
+      style: getTextStyle().copyWith(color: color, fontSize: fontSize),
       textAlign: textAlign,
       overflow: overflow,
     );

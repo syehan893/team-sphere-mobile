@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
-import 'package:team_sphere_mobile/views/cubits/login_cubit.dart';
-import 'package:team_sphere_mobile/views/cubits/home_cubit.dart';
+
+import '../cubits/cubit.dart';
 
 class GlobalStateProvider extends StatelessWidget {
   final Widget child;
@@ -17,6 +17,8 @@ class GlobalStateProvider extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()),
         BlocProvider(create: (context) => getIt<HomeCubit>()),
+        BlocProvider(create: (context) => getIt<EmployeeCubit>()),
+        BlocProvider(create: (context) => getIt<EmployeeAvatarCubit>()),
       ],
       child: child,
     );

@@ -28,18 +28,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
+       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
 
     return GlobalStateProvider(
       child: MaterialApp.router(
-      routerConfig: router,
+        routerConfig: router,
         theme: ThemeData(),
-        ),
+      ),
     );
   }
 }

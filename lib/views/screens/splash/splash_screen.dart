@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
+import 'package:team_sphere_mobile/views/cubits/employee_cubit.dart';
 import 'package:team_sphere_mobile/views/cubits/login_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context.go('/login');
         }
         if (state.status == AuthStatus.authenticated) {
+          context.read<EmployeeCubit>().fetchEmployeeByEmail();
           context.go('/home');
         }
       },

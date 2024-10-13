@@ -72,18 +72,18 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
 
   Color _getFocusColor({Color? unfocusColor}) {
     if (_hasError) {
-      return PColors.alert.red700;
+      return TSColors.alert.red700;
     } else if (_hasFocus) {
-      return PColors.primary.p100;
+      return TSColors.primary.p100;
     }
     return unfocusColor ??
         (widget.dropdownFieldTheme == CustomDropdownFieldTheme.v1
             ? Colors.transparent
-            : PColors.shades.disabled);
+            : TSColors.shades.disabled);
   }
 
   TextStyle get _defaultStyle => TextStyles.body1Regular.copyWith(
-        color: PColors.shades.disabled,
+        color: TSColors.shades.disabled,
       );
   @override
   Widget build(BuildContext context) {
@@ -94,8 +94,8 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
           decoration: BoxDecoration(
             color: widget.fillColor ??
                 (widget.dropdownFieldTheme == CustomDropdownFieldTheme.v1
-                    ? PColors.background.b400
-                    : PColors.background.b100),
+                    ? TSColors.background.b400
+                    : TSColors.background.b100),
           
             border: Border(
                 bottom: BorderSide(
@@ -116,7 +116,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
                         isDense: true,
                         validator: widget.validator,
                         style: TextStyles.subHeadlineRegular.copyWith(
-                          color: PColors.shades.loEm,
+                          color: TSColors.shades.loEm,
                         ),
 
                         decoration: InputDecoration(
@@ -132,7 +132,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
                                   : widget.label,
                           labelStyle: _defaultStyle,
                           fillColor:
-                              widget.fillColor ?? PColors.background.b400,
+                              widget.fillColor ?? TSColors.background.b400,
                           filled: true,
                         ),
                         value: _value,
@@ -153,7 +153,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
                   ],
                 ),
               ),
-              Icon(Icons.arrow_drop_down, color: PColors.shades.disabled)
+              Icon(Icons.arrow_drop_down, color: TSColors.shades.disabled)
             ],
           ),
         ),
@@ -163,7 +163,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
             padding: const EdgeInsets.only(left: 16.0, top: 4),
             child: Body1(
               widget.validator?.call(_value) ?? CommonStrings.emptyString,
-              color: PColors.alert.red700,
+              color: TSColors.alert.red700,
             ),
           ),
         )
