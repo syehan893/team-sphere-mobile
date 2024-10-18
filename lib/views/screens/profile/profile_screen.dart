@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
           context.read<EmployeeAvatarCubit>().loadAvatar(state.employee.email);
 
           return Padding(
-            padding: const EdgeInsets.only(top:40),
+            padding: const EdgeInsets.only(top: 40),
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -31,8 +31,9 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Body1.bold(
                       '${state.employee.firstName} ${state.employee.lastName}',
+                      fontSize: 14,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Body1.regular(state.employee.jobTitle),
                     const SizedBox(height: 24),
                     ElevatedButton(
@@ -51,7 +52,8 @@ class ProfileScreen extends StatelessWidget {
                     _buildOptionTile(Icons.person, 'My Profile', () {}),
                     _buildOptionTile(
                         Icons.description, 'Terms & Condition', () {}),
-                    _buildOptionTile(Icons.privacy_tip, 'Privacy Policy', () {}),
+                    _buildOptionTile(
+                        Icons.privacy_tip, 'Privacy Policy', () {}),
                     _buildOptionTile(Icons.logout, 'Logout', () {
                       context.read<AuthCubit>().signOut();
                     }, isLogout: true),

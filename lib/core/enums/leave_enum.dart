@@ -1,0 +1,1 @@
+enum LeaveStatus { approved, pending, declined }

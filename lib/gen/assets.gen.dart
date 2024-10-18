@@ -20,6 +20,10 @@ class $AssetsIconsGen {
   AssetGenImage get earthAirplane =>
       const AssetGenImage('assets/icons/earth-airplane.png');
 
+  /// File path: assets/icons/hierarchy.png
+  AssetGenImage get hierarchy =>
+      const AssetGenImage('assets/icons/hierarchy.png');
+
   /// File path: assets/icons/home_icon.png
   AssetGenImage get homeIcon =>
       const AssetGenImage('assets/icons/home_icon.png');
@@ -55,6 +59,7 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [
         dollarCoin,
         earthAirplane,
+        hierarchy,
         homeIcon,
         newsPaper,
         notifications,

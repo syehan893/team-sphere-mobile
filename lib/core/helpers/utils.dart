@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:team_sphere_mobile/core/constant/strings.dart';
 
 class Util {
@@ -61,4 +62,9 @@ class Util {
     }
     return double.tryParse(s) != null;
   }
+
+  static String formatNumber(int number) {
+  final NumberFormat formatter = NumberFormat('#,##0', 'id_ID');
+  return formatter.format(number).replaceAll(',', '.');
+}
 }

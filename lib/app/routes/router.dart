@@ -23,23 +23,22 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: 'leave',
-          builder: (BuildContext context, GoRouterState state) {
-            return const LeaveScreen();
-          },
-          routes: [
-            GoRoute(
-              path: 'request',
-              builder: (BuildContext context, GoRouterState state) {
-                return const LeaveRequestScreen();
-              },
-            ),
-          ],
-        ),
+            path: 'leave',
+            builder: (BuildContext context, GoRouterState state) {
+              return LeaveScreen();
+            },
+            routes: [
+              GoRoute(
+                path: 'request',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const LeaveRequestScreen();
+                },
+              ),
+            ]),
         GoRoute(
           path: 'reimburse',
           builder: (BuildContext context, GoRouterState state) {
-            return const ReimbursementScreen();
+            return ReimbursementScreen();
           },
           routes: [
             GoRoute(

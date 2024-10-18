@@ -71,8 +71,8 @@ class HomeScreenState extends State<HomeScreen> {
               ),
               BottomNavigationBarItem(
                 icon: mapNavBarIcon(
-                    state, Assets.icons.taskIcon.path, HomeNavBar.task),
-                label: 'Task',
+                    state, Assets.icons.hierarchy.path, HomeNavBar.task),
+                label: 'My Team',
               ),
               BottomNavigationBarItem(
                 icon: mapNavBarIcon(
