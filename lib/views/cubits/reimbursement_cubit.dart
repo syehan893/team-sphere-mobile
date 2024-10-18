@@ -3,72 +3,58 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/data.dart';
 
-abstract class ReimbursementRequestState {}
+abstract class FetchReimbursementRequestState {}
 
-class ReimbursementRequestInitial extends ReimbursementRequestState {}
+class FetchReimbursementRequestInitial extends FetchReimbursementRequestState {}
 
-class ReimbursementRequestLoading extends ReimbursementRequestState {}
+class FetchReimbursementRequestLoading extends FetchReimbursementRequestState {}
 
-class ReimbursementRequestLoaded extends ReimbursementRequestState {
+class FetchReimbursementRequestLoaded extends FetchReimbursementRequestState {
   final List<ReimbursementRequest> reimbursementRequests;
 
-  ReimbursementRequestLoaded(this.reimbursementRequests);
+  FetchReimbursementRequestLoaded(this.reimbursementRequests);
 }
 
-class ReimbursementRequestError extends ReimbursementRequestState {
+class FetchManagerReimbursementRequestLoaded
+    extends FetchReimbursementRequestState {
+  final List<ReimbursementRequest> approvalReimbursementRequests;
+
+  FetchManagerReimbursementRequestLoaded(this.approvalReimbursementRequests);
+}
+
+class FetchReimbursementRequestError extends FetchReimbursementRequestState {
   final String error;
 
-  ReimbursementRequestError(this.error);
+  FetchReimbursementRequestError(this.error);
 }
 
 @injectable
-class ReimbursementRequestCubit extends Cubit<ReimbursementRequestState> {
+class FetchReimbursementRequestCubit
+    extends Cubit<FetchReimbursementRequestState> {
   final ReimbursementRequestRepository _repository;
 
-  ReimbursementRequestCubit(this._repository)
-      : super(ReimbursementRequestInitial());
+  FetchReimbursementRequestCubit(this._repository)
+      : super(FetchReimbursementRequestInitial());
 
   Future<void> fetchReimbursementRequestsByEmployeeId(String employeeId) async {
-    emit(ReimbursementRequestLoading());
+    emit(FetchReimbursementRequestLoading());
     try {
       final reimbursementRequests =
           await _repository.getReimbursementRequestsByEmployeeId(employeeId);
-      emit(ReimbursementRequestLoaded(reimbursementRequests));
+      emit(FetchReimbursementRequestLoaded(reimbursementRequests));
     } catch (e) {
-      emit(ReimbursementRequestError(e.toString()));
+      emit(FetchReimbursementRequestError(e.toString()));
     }
   }
 
-  Future<void> fetchReimbursementRequestsByManagerId(String managerId) async {
-    emit(ReimbursementRequestLoading());
+  Future<void> fetchReimbursementRequestsByManagerId(String employeeId) async {
+    emit(FetchReimbursementRequestLoading());
     try {
       final reimbursementRequests =
-          await _repository.getReimbursementRequestsByManagerId(managerId);
-      emit(ReimbursementRequestLoaded(reimbursementRequests));
+          await _repository.getReimbursementRequestsByManagerId(employeeId);
+      emit(FetchManagerReimbursementRequestLoaded(reimbursementRequests));
     } catch (e) {
-      emit(ReimbursementRequestError(e.toString()));
-    }
-  }
-
-  Future<void> createReimbursementRequest(
-      ReimbursementRequest reimbursementRequest) async {
-    emit(ReimbursementRequestLoading());
-    try {
-      await _repository.createReimbursementRequest(reimbursementRequest);
-      emit(ReimbursementRequestInitial());
-    } catch (e) {
-      emit(ReimbursementRequestError(e.toString()));
-    }
-  }
-
-  Future<void> updateReimbursementRequest(
-      int requestId, Map<String, dynamic> data) async {
-    emit(ReimbursementRequestLoading());
-    try {
-      await _repository.updateReimbursementRequest(requestId, data);
-      emit(ReimbursementRequestInitial());
-    } catch (e) {
-      emit(ReimbursementRequestError(e.toString()));
+      emit(FetchReimbursementRequestError(e.toString()));
     }
   }
 }

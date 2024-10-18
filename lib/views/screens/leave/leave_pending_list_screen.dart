@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../app/themes/themes.dart';
+import '../../../core/helpers/utils.dart';
+import '../../cubits/cubit.dart';
 import '../../widgets/widgets.dart';
 
 class PendingRequestList extends StatelessWidget {
@@ -8,18 +12,57 @@ class PendingRequestList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AnimatedListView(
-      children: [
-        PendingRequestCard(
-            name: 'Muhammad Syehan',
-            initials: 'syehan@gmail.com',
-            date: '29 Jul - 31 Aug'),
-        PendingRequestCard(
-            name: 'Muhammad Fernando', initials: 'MF', date: '02 Jun - 07 Jun'),
-        PendingRequestCard(
-            name: 'Agatha Aurel', initials: 'AA', date: '16 Dec - 27 Dec'),
-      ],
+    return BlocBuilder<FetchLeaveRequestCubit, FetchLeaveRequestState>(
+      builder: (context, state) {
+        if (state is FetchLeaveRequestError) {
+          return const Center(
+            child: Body1.regular('Data Not Found', fontSize: 14),
+          );
+        }
+        if (state is FetchLeaveRequestLoading) {
+          return Center(
+              child: LoadingAnimationWidget.progressiveDots(
+            color: TSColors.primary.p100,
+            size: 50,
+          ));
+        }
+        if (state is FetchManagerLeaveRequestLoaded) {
+          final listLeave = state.approvalLeaveRequests;
+          if (listLeave.isEmpty) {
+            return const Center(
+              child: Body1.regular('Data Not Found', fontSize: 14),
+            );
+          }
+          return AnimatedListView(
+            children: List.generate(
+              listLeave.length,
+              (int index) {
+                final leave = listLeave[index];
+                return PendingRequestCard(
+                    name: leave.employeeId,
+                    initials: 'syehan@gmail.com',
+                    date: Util.formatDateRange(leave.startDate, leave.endDate));
+              },
+            ),
+          );
+        }
+
+        return const SizedBox.shrink();
+      },
     );
+
+    // return const AnimatedListView(
+    //   children: [
+    //     PendingRequestCard(
+    //         name: 'Muhammad Syehan',
+    //         initials: 'syehan@gmail.com',
+    //         date: '29 Jul - 31 Aug'),
+    //     PendingRequestCard(
+    //         name: 'Muhammad Fernando', initials: 'MF', date: '02 Jun - 07 Jun'),
+    //     PendingRequestCard(
+    //         name: 'Agatha Aurel', initials: 'AA', date: '16 Dec - 27 Dec'),
+    //   ],
+    // );
   }
 }
 
@@ -57,7 +100,8 @@ class PendingRequestCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Body1.bold(name, fontSize: 14, overflow: TextOverflow.ellipsis),
+                  Body1.bold(name,
+                      fontSize: 14, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 6),
                   Body1.regular(date),
                 ],

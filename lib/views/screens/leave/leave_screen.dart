@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/views/cubits/cubit.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import 'leave_list_screen.dart';
@@ -33,11 +35,36 @@ class LeaveScreen extends StatelessWidget {
             ValueListenableBuilder<bool>(
               valueListenable: _showPendingRequestsNotifier,
               builder: (context, showPendingRequests, child) {
-                return CustomTabBar(
-                  tabLabels: const ['My Leave(s)', 'Approval Request'],
-                  selectedIndex: showPendingRequests ? 1 : 0,
-                  onTabSelected: (index) {
-                    _showPendingRequestsNotifier.value = index == 1;
+                return BlocBuilder<EmployeeCubit, EmployeeState>(
+                  builder: (context, state) {
+                    if (state is EmployeeLoaded) {
+                      return CustomTabBar(
+                        tabLabels: const ['My Leave(s)', 'Approval Request'],
+                        selectedIndex: showPendingRequests ? 1 : 0,
+                        onTabSelected: (index) {
+                          if (index == 1) {
+                            context
+                                .read<FetchLeaveRequestCubit>()
+                                .fetchLeaveRequestsByManagerId(
+                                    state.employee.employeeId);
+                          } else {
+                            context
+                                .read<FetchLeaveRequestCubit>()
+                                .fetchLeaveRequestsByEmployeeId(
+                                    state.employee.employeeId);
+                          }
+
+                          _showPendingRequestsNotifier.value = index == 1;
+                        },
+                      );
+                    }
+                    return CustomTabBar(
+                      tabLabels: const ['My Leave(s)', 'Approval Request'],
+                      selectedIndex: showPendingRequests ? 1 : 0,
+                      onTabSelected: (index) {
+                        _showPendingRequestsNotifier.value = index == 1;
+                      },
+                    );
                   },
                 );
               },

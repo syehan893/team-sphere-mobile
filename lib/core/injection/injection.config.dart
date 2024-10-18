@@ -37,8 +37,10 @@ import '../../views/cubits/avatar_cubit.dart' as _i89;
 import '../../views/cubits/employee_cubit.dart' as _i225;
 import '../../views/cubits/employee_roll_call_cubit.dart' as _i103;
 import '../../views/cubits/home_cubit.dart' as _i934;
+import '../../views/cubits/leave_creation_cubit.dart' as _i528;
 import '../../views/cubits/leave_cubit.dart' as _i47;
 import '../../views/cubits/login_cubit.dart' as _i35;
+import '../../views/cubits/reimbursement_creation_cubit.dart' as _i955;
 import '../../views/cubits/reimbursement_cubit.dart' as _i363;
 import '../network/api_client.dart' as _i557;
 import '../network/auth_interceptor.dart' as _i908;
@@ -111,13 +113,18 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i388.EmployeeRollCallDataSource>()));
     gh.factory<_i225.EmployeeCubit>(
         () => _i225.EmployeeCubit(gh<_i388.EmployeeRepository>()));
-    gh.factory<_i363.ReimbursementRequestCubit>(() =>
-        _i363.ReimbursementRequestCubit(
+    gh.factory<_i363.FetchReimbursementRequestCubit>(() =>
+        _i363.FetchReimbursementRequestCubit(
+            gh<_i388.ReimbursementRequestRepository>()));
+    gh.factory<_i955.CreateReimbursementRequestCubit>(() =>
+        _i955.CreateReimbursementRequestCubit(
             gh<_i388.ReimbursementRequestRepository>()));
     gh.factory<_i103.EmployeeRollCallCubit>(() =>
         _i103.EmployeeRollCallCubit(gh<_i388.EmployeeRollCallRepository>()));
-    gh.factory<_i47.LeaveRequestCubit>(
-        () => _i47.LeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
+    gh.factory<_i47.FetchLeaveRequestCubit>(
+        () => _i47.FetchLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
+    gh.factory<_i528.CreateLeaveRequestCubit>(() =>
+        _i528.CreateLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
     return this;
   }
 }

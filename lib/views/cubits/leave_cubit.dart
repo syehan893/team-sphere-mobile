@@ -3,70 +3,53 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/data.dart';
 
-abstract class LeaveRequestState {}
+abstract class FetchLeaveRequestState {}
 
-class LeaveRequestInitial extends LeaveRequestState {}
+class FetchLeaveRequestInitial extends FetchLeaveRequestState {}
 
-class LeaveRequestLoading extends LeaveRequestState {}
+class FetchLeaveRequestLoading extends FetchLeaveRequestState {}
 
-class LeaveRequestLoaded extends LeaveRequestState {
+class FetchLeaveRequestLoaded extends FetchLeaveRequestState {
   final List<LeaveRequest> leaveRequests;
 
-  LeaveRequestLoaded(this.leaveRequests);
+  FetchLeaveRequestLoaded(this.leaveRequests);
 }
 
-class LeaveRequestError extends LeaveRequestState {
+class FetchManagerLeaveRequestLoaded extends FetchLeaveRequestState {
+  final List<LeaveRequest> approvalLeaveRequests;
+
+  FetchManagerLeaveRequestLoaded(this.approvalLeaveRequests);
+}
+
+class FetchLeaveRequestError extends FetchLeaveRequestState {
   final String error;
 
-  LeaveRequestError(this.error);
+  FetchLeaveRequestError(this.error);
 }
 
 @injectable
-class LeaveRequestCubit extends Cubit<LeaveRequestState> {
+class FetchLeaveRequestCubit extends Cubit<FetchLeaveRequestState> {
   final LeaveRequestRepository _repository;
 
-  LeaveRequestCubit(this._repository) : super(LeaveRequestInitial());
+  FetchLeaveRequestCubit(this._repository) : super(FetchLeaveRequestInitial());
 
   Future<void> fetchLeaveRequestsByEmployeeId(String employeeId) async {
-    emit(LeaveRequestLoading());
+    emit(FetchLeaveRequestLoading());
     try {
-      final leaveRequests =
-          await _repository.getLeaveRequestsByEmployeeId(employeeId);
-      emit(LeaveRequestLoaded(leaveRequests));
+      final leaveRequests = await _repository.getLeaveRequestsByEmployeeId(employeeId);
+      emit(FetchLeaveRequestLoaded(leaveRequests));
     } catch (e) {
-      emit(LeaveRequestError(e.toString()));
+      emit(FetchLeaveRequestError(e.toString()));
     }
   }
 
-  Future<void> fetchLeaveRequestsByManagerId(String managerId) async {
-    emit(LeaveRequestLoading());
+  Future<void> fetchLeaveRequestsByManagerId(String employeeId) async {
+    emit(FetchLeaveRequestLoading());
     try {
-      final leaveRequests =
-          await _repository.getLeaveRequestsByManagerId(managerId);
-      emit(LeaveRequestLoaded(leaveRequests));
+      final leaveRequests = await _repository.getLeaveRequestsByManagerId(employeeId);
+      emit(FetchManagerLeaveRequestLoaded(leaveRequests));
     } catch (e) {
-      emit(LeaveRequestError(e.toString()));
-    }
-  }
-
-  Future<void> createLeaveRequest(LeaveRequest leaveRequest) async {
-    emit(LeaveRequestLoading());
-    try {
-      await _repository.createLeaveRequest(leaveRequest);
-      emit(LeaveRequestInitial());
-    } catch (e) {
-      emit(LeaveRequestError(e.toString()));
-    }
-  }
-
-  Future<void> updateLeaveRequest(
-      int requestId, Map<String, dynamic> data) async {
-    emit(LeaveRequestLoading());
-    try {
-      await _repository.updateLeaveRequest(requestId, data);
-      emit(LeaveRequestInitial());
-    } catch (e) {
-      emit(LeaveRequestError(e.toString()));
+      emit(FetchLeaveRequestError(e.toString()));
     }
   }
 }

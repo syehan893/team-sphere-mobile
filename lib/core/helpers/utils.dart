@@ -20,9 +20,15 @@ class Util {
     return isNull || isEmpty || isZero;
   }
 
-  static  String getInitials({required String getString, int? limit}) => getString.isNotEmpty
-      ? getString.trim().split(RegExp(' +')).map((s) => s[0]).take(limit ??2).join()
-      : '';
+  static String getInitials({required String getString, int? limit}) =>
+      getString.isNotEmpty
+          ? getString
+              .trim()
+              .split(RegExp(' +'))
+              .map((s) => s[0])
+              .take(limit ?? 2)
+              .join()
+          : '';
 
   static String emptyStringOnNull(String? value) {
     if (value == null) {
@@ -64,7 +70,19 @@ class Util {
   }
 
   static String formatNumber(int number) {
-  final NumberFormat formatter = NumberFormat('#,##0', 'id_ID');
-  return formatter.format(number).replaceAll(',', '.');
-}
+    final NumberFormat formatter = NumberFormat('#,##0', 'id_ID');
+    return formatter.format(number).replaceAll(',', '.');
+  }
+
+  static String formatDateRange(String startDate, String endDate) {
+    final start = DateTime.parse(startDate);
+    final end = DateTime.parse(endDate);
+
+    final dateFormat = DateFormat('d MMM');
+
+    final formattedStart = dateFormat.format(start);
+    final formattedEnd = dateFormat.format(end);
+
+    return '$formattedStart - $formattedEnd';
+  }
 }
