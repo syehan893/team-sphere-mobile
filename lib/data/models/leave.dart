@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'models.dart';
+
 class LeaveRequest extends Equatable {
   final int requestId;
   final String employeeId;
@@ -13,6 +15,7 @@ class LeaveRequest extends Equatable {
   final String managerComment;
   final String createdAt;
   final String updatedAt;
+  final Employee? employee;
 
   const LeaveRequest({
     required this.requestId,
@@ -27,6 +30,7 @@ class LeaveRequest extends Equatable {
     required this.managerComment,
     required this.createdAt,
     required this.updatedAt,
+    required this.employee,
   });
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) {
@@ -43,6 +47,7 @@ class LeaveRequest extends Equatable {
       managerComment: json['manager_comment'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      employee: json['employee'] != null ? Employee.fromJson(json['employee']) : null
     );
   }
 

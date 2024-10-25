@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/views/cubits/cubit.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import 'my_reimbursement_list_screen.dart';
@@ -28,11 +30,36 @@ class ReimbursementScreen extends StatelessWidget {
           ValueListenableBuilder<bool>(
             valueListenable: _showPendingRequestsNotifier,
             builder: (context, showPendingRequests, child) {
-              return CustomTabBar(
-                tabLabels: const ['My Reimburse(s)', 'Approval Request'],
-                selectedIndex: showPendingRequests ? 1 : 0,
-                onTabSelected: (index) {
-                  _showPendingRequestsNotifier.value = index == 1;
+              return BlocBuilder<EmployeeCubit, EmployeeState>(
+                builder: (context, state) {
+                  if (state is EmployeeLoaded) {
+                    return CustomTabBar(
+                      tabLabels: const ['My Reimburse(s)', 'Approval Request'],
+                      selectedIndex: showPendingRequests ? 1 : 0,
+                      onTabSelected: (index) {
+                        if (index == 1) {
+                          context
+                              .read<FetchReimbursementRequestCubit>()
+                              .fetchReimbursementRequestsByManagerId(
+                                  state.employee.employeeId);
+                        } else {
+                          context
+                              .read<FetchReimbursementRequestCubit>()
+                              .fetchReimbursementRequestsByEmployeeId(
+                                  state.employee.employeeId);
+                        }
+
+                        _showPendingRequestsNotifier.value = index == 1;
+                      },
+                    );
+                  }
+                  return CustomTabBar(
+                    tabLabels: const ['My Reimburse(s)', 'Approval Request'],
+                    selectedIndex: showPendingRequests ? 1 : 0,
+                    onTabSelected: (index) {
+                      _showPendingRequestsNotifier.value = index == 1;
+                    },
+                  );
                 },
               );
             },
@@ -43,7 +70,7 @@ class ReimbursementScreen extends StatelessWidget {
               valueListenable: _showPendingRequestsNotifier,
               builder: (context, showPendingRequests, child) {
                 return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 300),
                   transitionBuilder:
                       (Widget child, Animation<double> animation) {
                     return FadeTransition(opacity: animation, child: child);

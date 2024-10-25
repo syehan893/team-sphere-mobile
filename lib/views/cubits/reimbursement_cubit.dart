@@ -1,31 +1,40 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-
+import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import '../../data/data.dart';
 
-abstract class FetchReimbursementRequestState {}
+class FetchReimbursementRequestState {
+  final FetchStatus employeeFetchStatus;
+  final FetchStatus managerFetchStatus;
+  final List<ReimbursementRequest>? reimbursementRequests;
+  final List<ReimbursementRequest>? approvalReimbursementRequests;
+  final String? error;
 
-class FetchReimbursementRequestInitial extends FetchReimbursementRequestState {}
+  FetchReimbursementRequestState({
+    this.employeeFetchStatus = FetchStatus.initial,
+    this.managerFetchStatus = FetchStatus.initial,
+    this.reimbursementRequests,
+    this.approvalReimbursementRequests,
+    this.error,
+  });
 
-class FetchReimbursementRequestLoading extends FetchReimbursementRequestState {}
-
-class FetchReimbursementRequestLoaded extends FetchReimbursementRequestState {
-  final List<ReimbursementRequest> reimbursementRequests;
-
-  FetchReimbursementRequestLoaded(this.reimbursementRequests);
-}
-
-class FetchManagerReimbursementRequestLoaded
-    extends FetchReimbursementRequestState {
-  final List<ReimbursementRequest> approvalReimbursementRequests;
-
-  FetchManagerReimbursementRequestLoaded(this.approvalReimbursementRequests);
-}
-
-class FetchReimbursementRequestError extends FetchReimbursementRequestState {
-  final String error;
-
-  FetchReimbursementRequestError(this.error);
+  FetchReimbursementRequestState copyWith({
+    FetchStatus? employeeFetchStatus,
+    FetchStatus? managerFetchStatus,
+    List<ReimbursementRequest>? reimbursementRequests,
+    List<ReimbursementRequest>? approvalReimbursementRequests,
+    String? error,
+  }) {
+    return FetchReimbursementRequestState(
+      employeeFetchStatus: employeeFetchStatus ?? this.employeeFetchStatus,
+      managerFetchStatus: managerFetchStatus ?? this.managerFetchStatus,
+      reimbursementRequests:
+          reimbursementRequests ?? this.reimbursementRequests,
+      approvalReimbursementRequests:
+          approvalReimbursementRequests ?? this.approvalReimbursementRequests,
+      error: error ?? this.error,
+    );
+  }
 }
 
 @injectable
@@ -34,27 +43,39 @@ class FetchReimbursementRequestCubit
   final ReimbursementRequestRepository _repository;
 
   FetchReimbursementRequestCubit(this._repository)
-      : super(FetchReimbursementRequestInitial());
+      : super(FetchReimbursementRequestState());
 
   Future<void> fetchReimbursementRequestsByEmployeeId(String employeeId) async {
-    emit(FetchReimbursementRequestLoading());
+    emit(state.copyWith(employeeFetchStatus: FetchStatus.loading));
     try {
       final reimbursementRequests =
           await _repository.getReimbursementRequestsByEmployeeId(employeeId);
-      emit(FetchReimbursementRequestLoaded(reimbursementRequests));
+      emit(state.copyWith(
+        employeeFetchStatus: FetchStatus.loaded,
+        reimbursementRequests: reimbursementRequests,
+      ));
     } catch (e) {
-      emit(FetchReimbursementRequestError(e.toString()));
+      emit(state.copyWith(
+        employeeFetchStatus: FetchStatus.error,
+        error: e.toString(),
+      ));
     }
   }
 
   Future<void> fetchReimbursementRequestsByManagerId(String employeeId) async {
-    emit(FetchReimbursementRequestLoading());
+    emit(state.copyWith(managerFetchStatus: FetchStatus.loading));
     try {
       final reimbursementRequests =
           await _repository.getReimbursementRequestsByManagerId(employeeId);
-      emit(FetchManagerReimbursementRequestLoaded(reimbursementRequests));
+      emit(state.copyWith(
+        managerFetchStatus: FetchStatus.loaded,
+        approvalReimbursementRequests: reimbursementRequests,
+      ));
     } catch (e) {
-      emit(FetchReimbursementRequestError(e.toString()));
+      emit(state.copyWith(
+        managerFetchStatus: FetchStatus.error,
+        error: e.toString(),
+      ));
     }
   }
 }

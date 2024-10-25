@@ -85,4 +85,14 @@ class Util {
 
     return '$formattedStart - $formattedEnd';
   }
+
+  static String formatDateStandard(String startDate) {
+    final start = DateTime.parse(startDate);
+
+    final dateFormat = DateFormat('d MMM yyyy');
+
+    final formattedStart = dateFormat.format(start);
+
+    return formattedStart;
+  }
 }

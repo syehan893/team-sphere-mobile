@@ -75,7 +75,7 @@ class LeaveScreen extends StatelessWidget {
                 valueListenable: _showPendingRequestsNotifier,
                 builder: (context, showPendingRequests, child) {
                   return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 300),
                     transitionBuilder:
                         (Widget child, Animation<double> animation) {
                       return FadeTransition(opacity: animation, child: child);

@@ -1,6 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:equatable/equatable.dart';
+
+import 'models.dart';
 
 class ReimbursementRequest extends Equatable {
   final int requestId;
@@ -17,6 +17,7 @@ class ReimbursementRequest extends Equatable {
   final String managerComment;
   final String createdAt;
   final String updatedAt;
+  final Employee? employee;
 
   const ReimbursementRequest({
     required this.requestId,
@@ -33,6 +34,7 @@ class ReimbursementRequest extends Equatable {
     required this.managerComment,
     required this.createdAt,
     required this.updatedAt,
+    required this.employee,
   });
 
   factory ReimbursementRequest.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,8 @@ class ReimbursementRequest extends Equatable {
       managerComment: json['manager_comment'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      employee:
+          json['employee'] != null ? Employee.fromJson(json['employee']) : null,
     );
   }
 

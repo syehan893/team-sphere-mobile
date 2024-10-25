@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/core/enums/leave_enum.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
 
@@ -15,20 +16,20 @@ class MyLeavesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FetchLeaveRequestCubit, FetchLeaveRequestState>(
       builder: (context, state) {
-        if (state is FetchLeaveRequestError) {
+        if (state.employeeFetchStatus == FetchStatus.error) {
           return const Center(
             child: Body1.regular('Data Not Found', fontSize: 14),
           );
         }
-        if (state is FetchLeaveRequestLoading) {
+        if (state.employeeFetchStatus == FetchStatus.loading) {
           return Center(
               child: LoadingAnimationWidget.progressiveDots(
             color: TSColors.primary.p100,
             size: 50,
           ));
         }
-        if (state is FetchLeaveRequestLoaded) {
-          final listLeave = state.leaveRequests;
+        if (state.employeeFetchStatus == FetchStatus.loaded) {
+          final listLeave = state.leaveRequests ?? [];
           if (listLeave.isEmpty) {
             return const Center(
               child: Body1.regular('Data Not Found', fontSize: 14),
