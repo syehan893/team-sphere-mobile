@@ -45,7 +45,8 @@ class PendingRequestList extends StatelessWidget {
                         '${leave.employee?.firstName} ${leave.employee?.lastName}',
                     initials:
                         leave.employee?.email ?? CommonStrings.emptyString,
-                    date: Util.formatDateRange(leave.startDate, leave.endDate));
+                    date: Util.formatDateRange(
+                        leave.startDate.toString(), leave.endDate.toString()));
               },
             ),
           );

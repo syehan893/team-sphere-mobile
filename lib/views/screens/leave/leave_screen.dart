@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/views/cubits/cubit.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
@@ -99,14 +100,51 @@ class LeaveCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 200,
       height: 200,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.blue[100],
+      child: Center(
+        child: PieChart(
+          PieChartData(
+            sections: _getChartSections(),
+            borderData: FlBorderData(show: false),
+            centerSpaceRadius: 40,
+          ),
+        ),
       ),
     );
+  }
+
+  List<PieChartSectionData> _getChartSections() {
+    final data = {
+      'Annual': 7,
+      'Sick': 5,
+      'Special': 1,
+    };
+
+    return data.entries.map((entry) {
+      final title = entry.key;
+      final value = entry.value;
+
+      return PieChartSectionData(
+        color: _getColor(title),
+        value: value.toDouble(),
+        title: '$value',
+      );
+    }).toList();
+  }
+
+  Color _getColor(String title) {
+    switch (title) {
+      case 'Annual':
+        return Colors.teal;
+      case 'Sick':
+        return Colors.indigo;
+      case 'Special':
+        return Colors.cyan;
+      default:
+        return Colors.grey;
+    }
   }
 }
 
@@ -118,11 +156,11 @@ class LeaveLegend extends StatelessWidget {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        LegendItem(color: Colors.blue, label: 'Annual'),
+        LegendItem(color: Colors.teal, label: 'Annual'),
         SizedBox(width: 20),
-        LegendItem(color: Colors.red, label: 'Sick'),
+        LegendItem(color: Colors.indigo, label: 'Sick'),
         SizedBox(width: 20),
-        LegendItem(color: Colors.green, label: 'Special'),
+        LegendItem(color: Colors.cyan, label: 'Special'),
       ],
     );
   }

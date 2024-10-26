@@ -1,77 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:team_sphere_mobile/app/themes/colors.dart';
+import 'package:team_sphere_mobile/app/themes/themes.dart';
+import 'package:team_sphere_mobile/core/enums/creation_status.dart';
+import 'package:team_sphere_mobile/core/injection/injection.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
-class LeaveRequestScreen extends StatefulWidget {
+import '../../cubits/cubit.dart';
+
+class LeaveRequestScreen extends StatelessWidget {
   const LeaveRequestScreen({super.key});
 
   @override
-  LeaveRequestScreenState createState() => LeaveRequestScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => getIt<CreateLeaveRequestCubit>(),
+      child: const LeaveRequestContent(),
+    );
+  }
 }
 
-class LeaveRequestScreenState extends State<LeaveRequestScreen> {
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
-  String leaveType = 'Annual';
-  TextEditingController reasonController = TextEditingController();
+class LeaveRequestContent extends StatelessWidget {
+  const LeaveRequestContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Leave'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+    return BaseLayout(
+      title: 'Leave Request',
+      useBackButton: true,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Submit your leave',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            _buildDatePicker('Start Date', startDate, (newDate) {
-              setState(() => startDate = newDate);
-            }),
-            const SizedBox(height: 16),
-            _buildDatePicker('End Date', endDate, (newDate) {
-              setState(() => endDate = newDate);
-            }),
-            const SizedBox(height: 16),
-            _buildDropdown(),
-            const SizedBox(height: 16),
-            TextField(
-              controller: reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF3F51B5),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-                onPressed: _submitLeaveRequest,
-                child: const Text('Submit'),
-              ),
-            ),
-          ],
+        child: BlocBuilder<CreateLeaveRequestCubit, CreateLeaveRequestState>(
+          builder: (context, state) {
+            if (state.status == CreationStatus.loading) {
+              return Center(
+                  child: LoadingAnimationWidget.progressiveDots(
+                color: TSColors.primary.p100,
+                size: 50,
+              ));
+            }
+            return BlocBuilder<EmployeeCubit, EmployeeState>(
+              builder: (context, employeeState) {
+                if (employeeState is EmployeeLoaded) {
+                  context.read<CreateLeaveRequestCubit>().updateManagerId(
+                      employeeState.employee.managerId ??
+                          employeeState.employee.employeeId);
+                  context
+                      .read<CreateLeaveRequestCubit>()
+                      .updateEmployeeId(employeeState.employee.employeeId);
+                }
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        H2(
+                          'Submit your leave',
+                          color: TSColors.primary.p100,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    _buildDatePicker(
+                      Key('statr-date-${state.leaveRequest.startDate}'),
+                      context,
+                      'Start Date',
+                      state.leaveRequest.startDate,
+                      (newDate) => context
+                          .read<CreateLeaveRequestCubit>()
+                          .updateStartDate(newDate),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildDatePicker(
+                      Key('statr-date-${state.leaveRequest.endDate}'),
+                      context,
+                      'End Date',
+                      state.leaveRequest.endDate,
+                      (newDate) => context
+                          .read<CreateLeaveRequestCubit>()
+                          .updateEndDate(newDate),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildDropdown(context, state),
+                    const SizedBox(height: 24),
+                    TextInput(
+                      onChanged: (value) => context
+                          .read<CreateLeaveRequestCubit>()
+                          .updateReason(value ?? ''),
+                      label: 'Reason',
+                    ),
+                    const Spacer(),
+                    _buildSubmitButton(context, state),
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildDatePicker(
-      String label, DateTime date, Function(DateTime) onDateChanged) {
+  Widget _buildDatePicker(Key key, BuildContext context, String label,
+      DateTime date, Function(DateTime) onDateChanged) {
     return InkWell(
+      key: key,
       onTap: () async {
         final DateTime? picked = await showDatePicker(
           context: context,
@@ -81,49 +119,43 @@ class LeaveRequestScreenState extends State<LeaveRequestScreen> {
         );
         if (picked != null) onDateChanged(picked);
       },
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          border: const OutlineInputBorder(),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(DateFormat('dd/MM/yyyy').format(date)),
-            const Icon(Icons.calendar_today),
-          ],
-        ),
+      child: BlocBuilder<CreateLeaveRequestCubit, CreateLeaveRequestState>(
+        builder: (context, state) {
+          return TextInput(
+            initialValue: DateFormat('dd/MM/yyyy').format(date),
+            enabled: false,
+            label: label,
+            suffixWidget: const Icon(Icons.calendar_today),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildDropdown() {
-    return DropdownButtonFormField<String>(
-      decoration: const InputDecoration(
-        labelText: 'Leave Type',
-        border: OutlineInputBorder(),
-      ),
-      value: leaveType,
-      onChanged: (String? newValue) {
-        setState(() {
-          leaveType = newValue!;
-        });
+  Widget _buildDropdown(BuildContext context, CreateLeaveRequestState state) {
+    return TextInput(
+      key: Key('leave-type-${state.leaveRequest.leaveType}'),
+      label: 'Leave Type',
+      initialValue: state.leaveRequest.leaveType,
+      onChanged: (newValue) {
+        context.read<CreateLeaveRequestCubit>().updateLeaveType(newValue!);
       },
-      items: <String>['Annual', 'Sick', 'Personal']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      dropdownOptions: const ['Annual Leave', 'Sick Leave', 'Special Leave'],
     );
   }
 
-  void _submitLeaveRequest() {
-    // print('Leave request submitted');
-    // print('Start Date: $startDate');
-    // print('End Date: $endDate');
-    // print('Leave Type: $leaveType');
-    // print('Reason: ${reasonController.text}');
+  Widget _buildSubmitButton(
+      BuildContext context, CreateLeaveRequestState state) {
+    return SizedBox(
+      width: double.infinity,
+      child: Button(
+        title: 'Submit',
+        onTap: state.status == CreationStatus.loading
+            ? null
+            : () {
+                context.read<CreateLeaveRequestCubit>().createLeaveRequest();
+              },
+      ),
+    );
   }
 }

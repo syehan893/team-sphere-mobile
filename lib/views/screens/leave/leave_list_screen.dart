@@ -42,7 +42,7 @@ class MyLeavesList extends StatelessWidget {
                 final leave = listLeave[index];
                 return LeaveCard(
                     type: leave.leaveType,
-                    date: Util.formatDateRange(leave.startDate, leave.endDate),
+                    date: Util.formatDateRange(leave.startDate.toString(), leave.endDate.toString()),
                     status:
                         LeaveStatusMapper.stringToLeaveStatus(leave.leaveType));
               },

@@ -49,13 +49,12 @@ class LoginForm extends StatelessWidget {
             hintText: 'Email',
           ),
           const SizedBox(height: 12),
-          TextInput.password(
+          TextInput(
             controller: passwordController,
             label: 'Password',
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            onVisibilityTap: () {},
             hintText: 'Password',
           ),
         ],

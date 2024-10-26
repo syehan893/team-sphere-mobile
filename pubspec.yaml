@@ -18,6 +18,7 @@ dependencies:
   expandable: any
   expandable_page_view: any
   file_picker: any
+  fl_chart: any
   flutter:
     sdk: flutter
   flutter_bloc: any

@@ -190,7 +190,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                   alignment: Alignment.center,
                   child: H3(
                     widget.title ?? CommonStrings.emptyString,
-                    color: TSColors.shades.loEm,
+                    color: TSColors.primary.p100,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -199,7 +199,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                   alignment: Alignment.center,
                   child: H3(
                     widget.title ?? CommonStrings.emptyString,
-                    color: TSColors.shades.loEm,
+                    color: TSColors.primary.p100,
                     overflow: TextOverflow.ellipsis,
                   ),
                 )

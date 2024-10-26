@@ -4,8 +4,7 @@ import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/core/constant/animation_duration.dart';
 import 'package:team_sphere_mobile/core/constant/strings.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
-
-import 'widgets.dart';
+import 'package:team_sphere_mobile/views/widgets/typography.dart';
 
 class TextInput extends StatefulWidget {
   final String label;
@@ -28,6 +27,7 @@ class TextInput extends StatefulWidget {
   final bool isRequired;
   final bool isOptional;
   final TextInputAction? textInputAction;
+  final List<String>? dropdownOptions;
 
   const TextInput({
     super.key,
@@ -50,80 +50,9 @@ class TextInput extends StatefulWidget {
     this.isRequired = false,
     this.isOptional = false,
     this.textInputAction,
+    this.dropdownOptions,
   })  : suffix = suffixWidget,
         prefix = null;
-
-  TextInput.password({
-    super.key,
-    required this.label,
-    Widget? prefix,
-    this.initialValue,
-    this.controller,
-    this.validator,
-    this.autovalidateMode,
-    this.enabled = true,
-    this.onChanged,
-    this.margin = const EdgeInsets.only(top: 2),
-    this.obscureText = false,
-    this.inputFormatters,
-    this.keyboardType,
-    this.readOnly = false,
-    this.onTap,
-    this.hintText,
-    this.fillColor,
-    Function()? onVisibilityTap,
-    this.isRequired = false,
-    this.isOptional = false,
-    this.textInputAction,
-  })  : prefix = null,
-        suffix = GestureDetector(
-          onTap: onVisibilityTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Icon(
-              obscureText
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
-              color:
-                  !obscureText ? TSColors.primary.p100 : TSColors.shades.disabled,
-            ),
-          ),
-        );
-
-  TextInput.prefixText({
-    super.key,
-    required this.label,
-    required String text,
-    this.initialValue,
-    this.controller,
-    this.validator,
-    this.autovalidateMode,
-    this.enabled = true,
-    this.onChanged,
-    this.margin = const EdgeInsets.only(top: 2),
-    this.obscureText = false,
-    this.inputFormatters,
-    this.keyboardType,
-    this.readOnly = false,
-    this.onTap,
-    this.hintText,
-    this.fillColor,
-    Function()? onVisibilityTap,
-    this.isRequired = false,
-    this.isOptional = false,
-    this.textInputAction,
-  })  : prefix = Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.only(top: 1),
-          constraints: const BoxConstraints(
-            maxWidth: 30,
-          ),
-          child: SubHeadline.bold(
-            text,
-            color: TSColors.shades.loEm,
-          ),
-        ),
-        suffix = null;
 
   @override
   State<TextInput> createState() => _TextInputState();
@@ -151,14 +80,6 @@ class _TextInputState extends State<TextInput> {
       });
   }
 
-  @override
-  void didUpdateWidget(covariant TextInput oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.initialValue != widget.initialValue) {
-      setState(() {});
-    }
-  }
-
   Color _getFocusColor({Color? unfocusColor}) {
     if (_hasError) {
       return TSColors.alert.red700;
@@ -168,28 +89,43 @@ class _TextInputState extends State<TextInput> {
     return unfocusColor ?? TSColors.shades.disabled;
   }
 
-  OutlineInputBorder get _errorBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.red),
+  Widget _buildInputField() {
+    if (widget.dropdownOptions != null && widget.dropdownOptions!.isNotEmpty) {
+      return DropdownButtonFormField<String>(
+        value: _text ?? widget.initialValue,
+        decoration: InputDecoration(
+          labelText: widget.isRequired
+              ? '${widget.label} *'
+              : widget.isOptional
+                  ? '${widget.label} (optional)'
+                  : widget.label,
+          fillColor: widget.enabled
+              ? widget.fillColor ?? TSColors.background.b100
+              : Colors.transparent,
+          filled: true,
+          isDense: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        items: widget.dropdownOptions!.map((String option) {
+          return DropdownMenuItem<String>(
+            value: option,
+            child: Body1.regular(option,
+                color: TSColors.primary.p100, fontSize: 14),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            _text = value;
+            widget.onChanged?.call(value);
+          });
+        },
+        validator: widget.validator,
       );
-
-  OutlineInputBorder get _defaultBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      );
-
-  TextStyle get _defaultStyle => TextStyles.body1Regular.copyWith(
-        color: TSColors.shades.disabled,
-      );
-  TextStyle get prefixStyle => TextStyles.subHeadlineBold.copyWith(
-        color: TSColors.shades.stroke,
-      );
-
-  TextStyle get _errorStyle => _defaultStyle.copyWith(
-        color: TSColors.alert.red700,
-      );
-
-  Widget get _textField => TextFormField(
+    } else {
+      return TextFormField(
         focusNode: _focusNode,
         textInputAction: widget.textInputAction,
         readOnly: widget.readOnly,
@@ -210,35 +146,24 @@ class _TextInputState extends State<TextInput> {
             _text = v;
           });
         },
-        style: TextStyles.subHeadlineRegular.copyWith(
-          color: TSColors.shades.loEm,
-        ),
+        style: TextStyles.body1Regular
+            .copyWith(color: TSColors.primary.p100, fontSize: 14),
         decoration: InputDecoration(
           prefixIcon: widget.prefix,
-          prefixStyle: prefixStyle.copyWith(
-            color: TSColors.shades.loEm,
-          ),
-          prefixIconConstraints:
-              const BoxConstraints(minHeight: 2, minWidth: 2),
           fillColor: widget.enabled
               ? widget.fillColor ?? TSColors.background.b100
               : Colors.transparent,
-          // hintText: widget.hintText,
-          hintStyle: _defaultStyle,
           filled: true,
           isDense: true,
-          errorBorder: _errorBorder,
-          errorStyle: _errorStyle,
-          contentPadding: const EdgeInsets.only(top: 30, bottom: 20),
-          labelText: widget.isRequired
-              ? '${ widget.label } *'
-              : widget.isOptional
-                  ? '${ widget.label } (optional)'
-                  : widget.label,
-          labelStyle: _defaultStyle,
-          border: _defaultBorder,
+          labelText: widget.isRequired ? '${widget.label} *' : widget.label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
         ),
       );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -256,9 +181,10 @@ class _TextInputState extends State<TextInput> {
               margin: widget.margin,
               decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(
-                  color: _getFocusColor(),
-                )),
+                  bottom: BorderSide(
+                    color: _getFocusColor(),
+                  ),
+                ),
               ),
               child: Row(
                 children: [
@@ -269,7 +195,7 @@ class _TextInputState extends State<TextInput> {
                       children: [
                         SizedBox(
                           height: 40,
-                          child: _textField,
+                          child: _buildInputField(),
                         ),
                       ],
                     ),
@@ -278,16 +204,14 @@ class _TextInputState extends State<TextInput> {
                 ],
               ),
             ),
-            Visibility(
-              visible: _hasError,
-              child: Padding(
+            if (_hasError)
+              Padding(
                 padding: const EdgeInsets.only(left: 16.0, top: 4),
-                child: Label.regular(
+                child: Body1.regular(
                   widget.validator?.call(_text) ?? CommonStrings.emptyString,
                   color: TSColors.alert.red700,
                 ),
               ),
-            )
           ],
         ),
       ),
