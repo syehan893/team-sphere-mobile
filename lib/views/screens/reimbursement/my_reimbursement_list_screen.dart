@@ -44,7 +44,7 @@ class MyReimbursementList extends StatelessWidget {
                 final reimbursement = listReimbursment[index];
                 return ReimbursementCard(
                     title: reimbursement.description,
-                    date: Util.formatDateStandard(reimbursement.expenseDate),
+                    date: Util.formatDateStandard(reimbursement.expenseDate.toString()),
                     amount: reimbursement.amount,
                     status: LeaveStatusMapper.stringToLeaveStatus(
                         reimbursement.status));

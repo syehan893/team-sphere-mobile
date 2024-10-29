@@ -52,7 +52,7 @@ class PendingRequestList extends StatelessWidget {
                       CommonStrings.emptyString,
                   description: reimbursement.description,
                   amount: reimbursement.amount,
-                  date: Util.formatDateStandard(reimbursement.expenseDate),
+                  date: Util.formatDateStandard(reimbursement.expenseDate.toString()),
                   onTap: onCardTap,
                 );
               },

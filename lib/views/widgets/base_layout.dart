@@ -147,6 +147,7 @@ class BaseLayout extends StatefulWidget {
   final BaseLayoutFooterPosition footerPosition;
   final EdgeInsets? footerPadding;
   final EdgeInsets? contentPadding;
+  final bool? resizeAvoidButton;
   final Widget? appBar;
   final Color? backgroundColor;
   final Color? appBarBackgroundColor;
@@ -168,6 +169,7 @@ class BaseLayout extends StatefulWidget {
     this.floatingActionButtonAnimator,
     this.floatingActionButtonLocation,
     this.backgroundImage,
+    this.resizeAvoidButton,
     required this.body,
     this.footer,
     this.footerPosition = BaseLayoutFooterPosition.fixed,
@@ -184,7 +186,8 @@ class _BaseLayoutState extends State<BaseLayout> {
         ? Stack(
             alignment: Alignment.centerLeft,
             children: [
-              if (Navigator.canPop(context) && (widget.useBackButton ?? false)) ...[
+              if (Navigator.canPop(context) &&
+                  (widget.useBackButton ?? false)) ...[
                 _buildBackButton(context)!,
                 Align(
                   alignment: Alignment.center,
@@ -239,6 +242,7 @@ class _BaseLayoutState extends State<BaseLayout> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: widget.resizeAvoidButton ?? false,
         backgroundColor: widget.backgroundColor ?? TSColors.background.b100,
         floatingActionButton: widget.floatingActionButton,
         floatingActionButtonAnimator: widget.floatingActionButtonAnimator,

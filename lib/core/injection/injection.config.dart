@@ -33,6 +33,8 @@ import '../../data/repositories/employee_repository.dart' as _i451;
 import '../../data/repositories/employee_roll_call_repository.dart' as _i565;
 import '../../data/repositories/leave_repository.dart' as _i672;
 import '../../data/repositories/reimbursement_repository.dart' as _i555;
+import '../../data/repositories/reimbursements_storage_repository.dart'
+    as _i422;
 import '../../views/cubits/avatar_cubit.dart' as _i89;
 import '../../views/cubits/employee_cubit.dart' as _i225;
 import '../../views/cubits/employee_roll_call_cubit.dart' as _i103;
@@ -75,6 +77,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i642.SupabaseAuthDatasource(gh<_i454.SupabaseClient>()));
     gh.factory<_i683.EmployeeStorageRepository>(() =>
         _i683.EmployeeStorageRepository(gh<_i388.SupabaseStorageDatasource>()));
+    gh.factory<_i422.ReimbursementStorageRepository>(() =>
+        _i422.ReimbursementStorageRepository(
+            gh<_i388.SupabaseStorageDatasource>()));
     gh.singleton<_i908.AuthService>(() => _i908.AuthService(
           gh<_i454.SupabaseClient>(),
           gh<_i905.SessionManager>(),
@@ -102,6 +107,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i555.ReimbursementRequestRepository>(() =>
         _i555.ReimbursementRequestRepository(
             gh<_i388.ReimbursementRequestDataSource>()));
+    gh.factory<_i955.CreateReimbursementRequestCubit>(
+        () => _i955.CreateReimbursementRequestCubit(
+              gh<_i388.ReimbursementRequestRepository>(),
+              gh<_i388.ReimbursementStorageRepository>(),
+            ));
     gh.factory<_i672.LeaveRequestRepository>(
         () => _i672.LeaveRequestRepository(gh<_i388.LeaveRequestDataSource>()));
     gh.factory<_i451.EmployeeRepository>(() => _i451.EmployeeRepository(
@@ -116,15 +126,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i363.FetchReimbursementRequestCubit>(() =>
         _i363.FetchReimbursementRequestCubit(
             gh<_i388.ReimbursementRequestRepository>()));
-    gh.factory<_i955.CreateReimbursementRequestCubit>(() =>
-        _i955.CreateReimbursementRequestCubit(
-            gh<_i388.ReimbursementRequestRepository>()));
     gh.factory<_i103.EmployeeRollCallCubit>(() =>
         _i103.EmployeeRollCallCubit(gh<_i388.EmployeeRollCallRepository>()));
-    gh.factory<_i47.FetchLeaveRequestCubit>(
-        () => _i47.FetchLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
     gh.factory<_i528.CreateLeaveRequestCubit>(() =>
         _i528.CreateLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
+    gh.factory<_i47.FetchLeaveRequestCubit>(
+        () => _i47.FetchLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
     return this;
   }
 }

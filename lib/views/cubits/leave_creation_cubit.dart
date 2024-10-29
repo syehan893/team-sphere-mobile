@@ -36,10 +36,10 @@ class CreateLeaveRequestCubit extends Cubit<CreateLeaveRequestState> {
       : super(CreateLeaveRequestState(
           leaveRequest: LeaveRequest(
             employeeId: '',
-            leaveType: 'Annual',
+            leaveType: 'Annual Leave',
             startDate: DateTime.now(),
             endDate: DateTime.now(),
-            totalDays: 1,
+            totalDays: 0,
             reason: '',
             status: 'Pending',
             managerId: '',
@@ -47,7 +47,7 @@ class CreateLeaveRequestCubit extends Cubit<CreateLeaveRequestState> {
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
             employee: null,
-            requestId: null,
+            requestId: 6,
           ),
         ));
 

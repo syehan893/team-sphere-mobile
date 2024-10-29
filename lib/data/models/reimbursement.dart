@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'models.dart';
 
 class ReimbursementRequest extends Equatable {
-  final int requestId;
+  final int? requestId;
   final String employeeId;
-  final String requestDate;
-  final String expenseDate;
+  final DateTime requestDate;
+  final DateTime expenseDate;
   final String expenseType;
   final int amount;
   final String currency;
@@ -15,8 +15,8 @@ class ReimbursementRequest extends Equatable {
   final String status;
   final String managerId;
   final String managerComment;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final Employee? employee;
 
   const ReimbursementRequest({
@@ -41,8 +41,12 @@ class ReimbursementRequest extends Equatable {
     return ReimbursementRequest(
       requestId: json['request_id'],
       employeeId: json['employee_id'],
-      requestDate: json['request_date'],
-      expenseDate: json['expense_date'],
+      requestDate: json['request_date'] != null
+          ? DateTime.parse(json['request_date'])
+          : DateTime.now(),
+      expenseDate: json['expense_date'] != null
+          ? DateTime.parse(json['expense_date'])
+          : DateTime.now(),
       expenseType: json['expense_type'],
       amount: json['amount'],
       currency: json['currency'],
@@ -51,8 +55,12 @@ class ReimbursementRequest extends Equatable {
       status: json['status'],
       managerId: json['manager_id'],
       managerComment: json['manager_comment'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : DateTime.now(),
       employee:
           json['employee'] != null ? Employee.fromJson(json['employee']) : null,
     );
@@ -60,10 +68,9 @@ class ReimbursementRequest extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'request_id': requestId,
       'employee_id': employeeId,
-      'request_date': requestDate,
-      'expense_date': expenseDate,
+      'request_date': requestDate.toString(),
+      'expense_date': expenseDate.toString(),
       'expense_type': expenseType,
       'amount': amount,
       'currency': currency,
@@ -72,13 +79,13 @@ class ReimbursementRequest extends Equatable {
       'status': status,
       'manager_id': managerId,
       'manager_comment': managerComment,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
+      'created_at': createdAt.toString(),
+      'updated_at': updatedAt.toString(),
     };
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       requestId,
       employeeId,
@@ -95,5 +102,41 @@ class ReimbursementRequest extends Equatable {
       createdAt,
       updatedAt,
     ];
+  }
+
+  ReimbursementRequest copyWith({
+    int? requestId,
+    String? employeeId,
+    DateTime? requestDate,
+    DateTime? expenseDate,
+    String? expenseType,
+    int? amount,
+    String? currency,
+    String? description,
+    String? receiptFilePath,
+    String? status,
+    String? managerId,
+    String? managerComment,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Employee? employee,
+  }) {
+    return ReimbursementRequest(
+      requestId: requestId ?? this.requestId,
+      employeeId: employeeId ?? this.employeeId,
+      requestDate: requestDate ?? this.requestDate,
+      expenseDate: expenseDate ?? this.expenseDate,
+      expenseType: expenseType ?? this.expenseType,
+      amount: amount ?? this.amount,
+      currency: currency ?? this.currency,
+      description: description ?? this.description,
+      receiptFilePath: receiptFilePath ?? this.receiptFilePath,
+      status: status ?? this.status,
+      managerId: managerId ?? this.managerId,
+      managerComment: managerComment ?? this.managerComment,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      employee: employee ?? this.employee,
+    );
   }
 }
