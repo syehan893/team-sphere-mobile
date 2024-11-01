@@ -95,4 +95,14 @@ class Util {
 
     return formattedStart;
   }
+
+    static String formatDateFullVersion(String startDate) {
+    final start = DateTime.parse(startDate);
+
+    final dateFormat = DateFormat('dd MMMM yyyy');
+
+    final formattedStart = dateFormat.format(start);
+
+    return formattedStart;
+  }
 }

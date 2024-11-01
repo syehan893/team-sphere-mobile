@@ -3,38 +3,46 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
+import 'package:team_sphere_mobile/core/enums/creation_status.dart';
+import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import '../../data/data.dart';
 
-enum CreateReimbursementRequestStatus { initial, loading, success, error }
-
 class CreateReimbursementRequestState extends Equatable {
-  final CreateReimbursementRequestStatus status;
+  final CreationStatus status;
+  final FetchStatus downloadFileStatus;
   final ReimbursementRequest reimbursementRequest;
   final String? error;
   final String? fileName;
   final Uint8List? fileBytes;
+  final String? filePublicUrl;
 
   const CreateReimbursementRequestState({
-    this.status = CreateReimbursementRequestStatus.initial,
+    this.status = CreationStatus.initial,
+    this.downloadFileStatus = FetchStatus.initial,
     required this.reimbursementRequest,
     this.error,
     this.fileName,
     this.fileBytes,
+    this.filePublicUrl,
   });
 
   CreateReimbursementRequestState copyWith({
-    CreateReimbursementRequestStatus? status,
+    CreationStatus? status,
     ReimbursementRequest? reimbursementRequest,
+    FetchStatus? downloadFileStatus,
     String? error,
     String? fileName,
     Uint8List? fileBytes,
+    String? filePublicUrl,
   }) {
     return CreateReimbursementRequestState(
       status: status ?? this.status,
       reimbursementRequest: reimbursementRequest ?? this.reimbursementRequest,
+      downloadFileStatus: downloadFileStatus ?? this.downloadFileStatus,
       error: error ?? this.error,
       fileName: fileName ?? this.fileName,
       fileBytes: fileBytes ?? this.fileBytes,
+      filePublicUrl: filePublicUrl ?? this.filePublicUrl,
     );
   }
 
@@ -43,6 +51,7 @@ class CreateReimbursementRequestState extends Equatable {
     return [
       status,
       reimbursementRequest,
+      downloadFileStatus,
       error,
       fileName,
       fileBytes,
@@ -64,7 +73,7 @@ class CreateReimbursementRequestCubit
                 DateFormat('yyyy-MM-dd').parse(DateTime.now().toString()),
             expenseDate: DateTime.now(),
             expenseType: 'Software',
-            amount: 100000,
+            amount: 0,
             currency: 'IDR',
             description: '',
             receiptFilePath: '',
@@ -79,37 +88,52 @@ class CreateReimbursementRequestCubit
         ));
 
   Future<void> createReimbursementRequest() async {
-    emit(state.copyWith(status: CreateReimbursementRequestStatus.loading));
+    emit(state.copyWith(status: CreationStatus.loading));
     try {
-      if (state.fileBytes != null && state.fileName != null) {
+      if (state.fileBytes != null) {
         final uploadResult = await _storageRepository.uploadReimbursement(
           state.reimbursementRequest.employeeId,
-          state.fileName!,
+          state.reimbursementRequest.receiptFilePath,
           state.fileBytes!,
         );
 
         if (!uploadResult) {
           emit(state.copyWith(
-              status: CreateReimbursementRequestStatus.error,
-              error: "Failed to upload file."));
+              status: CreationStatus.error, error: "Failed to upload file."));
           return;
         }
       }
 
       await _repository.createReimbursementRequest(state.reimbursementRequest);
-      emit(state.copyWith(status: CreateReimbursementRequestStatus.success));
+      emit(state.copyWith(status: CreationStatus.success));
     } catch (e) {
       emit(state.copyWith(
-        status: CreateReimbursementRequestStatus.error,
+        status: CreationStatus.error,
         error: e.toString(),
       ));
+    }
+  }
+
+  Future<void> downloadFile(String filePath) async {
+    emit(state.copyWith(downloadFileStatus: FetchStatus.loading));
+    try {
+      final response = await _storageRepository.downloadFile(filePath);
+      emit(state.copyWith(
+          downloadFileStatus: FetchStatus.loaded, filePublicUrl: response));
+    } catch (e) {
+      emit(state.copyWith(downloadFileStatus: FetchStatus.error));
     }
   }
 
   void selectFile(String originalFileName, Uint8List fileBytes) {
     final uniqueFileName =
         '${state.reimbursementRequest.employeeId}_${DateTime.now().millisecondsSinceEpoch}_$originalFileName';
-    emit(state.copyWith(fileName: uniqueFileName, fileBytes: fileBytes));
+    updateField(fileName: uniqueFileName);
+    emit(state.copyWith(fileBytes: fileBytes));
+  }
+
+  void updateFilename(String originalFileName) {
+    emit(state.copyWith(fileName: originalFileName));
   }
 
   void updateField({

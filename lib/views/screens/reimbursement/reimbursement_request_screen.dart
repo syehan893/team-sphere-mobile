@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
+import 'package:team_sphere_mobile/core/enums/creation_status.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
 
 import '../../cubits/cubit.dart';
@@ -34,16 +35,36 @@ class ReimbursementRequestContent extends StatelessWidget {
       resizeAvoidButton: false,
       title: 'Reimbursement Request',
       useBackButton: true,
-      body: BlocBuilder<CreateReimbursementRequestCubit,
+      body: BlocConsumer<CreateReimbursementRequestCubit,
           CreateReimbursementRequestState>(
-        builder: (context, state) {
-          if (state.status == CreateReimbursementRequestStatus.loading) {
-            return Center(
-                child: LoadingAnimationWidget.progressiveDots(
-              color: TSColors.primary.p100,
-              size: 50,
-            ));
+        listener: (context, state) {
+          if (state.status == CreationStatus.loading) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Center(
+                  child: LoadingAnimationWidget.progressiveDots(
+                    color: TSColors.primary.p100,
+                    size: 50,
+                  ),
+                );
+              },
+            );
           }
+          if (state.status == CreationStatus.success) {
+            CustomToast.showToast(
+                context, 'Reimbursement Requested', TSColors.alert.green700);
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
+          if (state.status == CreationStatus.error) {
+            CustomToast.showToast(
+                context, 'Reimbursement Request failed', TSColors.alert.red700);
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
           return BlocBuilder<EmployeeCubit, EmployeeState>(
             builder: (context, employeeState) {
               if (employeeState is EmployeeLoaded) {
@@ -68,6 +89,13 @@ class ReimbursementRequestContent extends StatelessWidget {
                     TextInput(
                       onChanged: (value) => cubit.updateField(title: value),
                       label: 'Title',
+                    ),
+                    const SizedBox(height: 24),
+                    TextInput(
+                      onChanged: (value) =>
+                          cubit.updateField(amount: int.parse(value ?? '0')),
+                      label: 'Amount',
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 24),
                     _buildDatePicker(context, cubit),
@@ -119,9 +147,7 @@ class ReimbursementRequestContent extends StatelessWidget {
                 .format(state.reimbursementRequest.expenseDate)
                 .toString(),
             enabled: false,
-            label: DateFormat('dd/MM/yyyy')
-                .format(state.reimbursementRequest.expenseDate)
-                .toString(),
+            label: 'Expense Date',
             suffixWidget: const Icon(Icons.calendar_today),
           );
         },
@@ -196,7 +222,7 @@ class ReimbursementRequestContent extends StatelessWidget {
       final fileName = result.files.single.name;
 
       cubit.selectFile(fileName, fileBytes);
-      cubit.updateField(fileName: fileName);
+      cubit.updateFilename(fileName);
     }
   }
 }

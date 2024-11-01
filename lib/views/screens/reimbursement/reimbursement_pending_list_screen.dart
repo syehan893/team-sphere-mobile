@@ -5,15 +5,16 @@ import 'package:team_sphere_mobile/app/themes/responsive.dart';
 import 'package:team_sphere_mobile/core/constant/strings.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
+import 'package:team_sphere_mobile/core/injection/injection.dart';
+import 'package:team_sphere_mobile/views/screens/reimbursement/reimbursement_detail_modal.dart';
 
 import '../../../app/themes/themes.dart';
+import '../../../data/data.dart';
 import '../../cubits/cubit.dart';
 import '../../widgets/widgets.dart';
 
 class PendingRequestList extends StatelessWidget {
-  final Function(BuildContext, String, String, int, String) onCardTap;
-
-  const PendingRequestList({super.key, required this.onCardTap});
+  const PendingRequestList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +46,19 @@ class PendingRequestList extends StatelessWidget {
               (int index) {
                 final reimbursement = listReimbursment[index];
                 return PendingRequestCard(
-                  key: Key('${reimbursement.requestId}'),
+                  key: Key(
+                      'key-${reimbursement.requestId}-${reimbursement.receiptFilePath}'),
                   name:
                       '${reimbursement.employee?.firstName} ${reimbursement.employee?.lastName}',
                   initials: reimbursement.employee?.email ??
                       CommonStrings.emptyString,
                   description: reimbursement.description,
                   amount: reimbursement.amount,
-                  date: Util.formatDateStandard(reimbursement.expenseDate.toString()),
-                  onTap: onCardTap,
+                  date: Util.formatDateStandard(
+                      reimbursement.expenseDate.toString()),
+                  onTap: () {
+                    _showDetailModal(context, reimbursement);
+                  },
                 );
               },
             ),
@@ -64,6 +69,32 @@ class PendingRequestList extends StatelessWidget {
       },
     );
   }
+
+  void _showDetailModal(
+      BuildContext context, ReimbursementRequest reimbursement) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.7,
+        minChildSize: 0.7,
+        maxChildSize: 0.75,
+        expand: false,
+        builder: (_, controller) => BlocProvider(
+          create: (context) => getIt<CreateReimbursementRequestCubit>(),
+          child: ReimbursementDetailModal(
+            key: Key(
+                'key-reimbursement-detail-modal-${reimbursement.employeeId}-${reimbursement.receiptFilePath}-${reimbursement.createdAt}'),
+            controller: controller,
+            reimbursement: reimbursement,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class PendingRequestCard extends StatelessWidget {
@@ -72,7 +103,7 @@ class PendingRequestCard extends StatelessWidget {
   final String description;
   final int amount;
   final String date;
-  final Function(BuildContext, String, String, int, String) onTap;
+  final Function() onTap;
 
   const PendingRequestCard({
     super.key,
@@ -89,7 +120,7 @@ class PendingRequestCard extends StatelessWidget {
     final responsive = ResponsiveLayout(context);
 
     return GestureDetector(
-      onTap: () => onTap(context, name, description, amount, date),
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(

@@ -6,7 +6,6 @@ import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import 'my_reimbursement_list_screen.dart';
 import 'reimbursement_pending_list_screen.dart';
-import 'reimbursement_detail_modal.dart';
 
 class ReimbursementScreen extends StatelessWidget {
   ReimbursementScreen({super.key}) {
@@ -76,9 +75,8 @@ class ReimbursementScreen extends StatelessWidget {
                     return FadeTransition(opacity: animation, child: child);
                   },
                   child: showPendingRequests
-                      ? PendingRequestList(
-                          key: const ValueKey('PendingRequestList'),
-                          onCardTap: _showDetailModal,
+                      ? const PendingRequestList(
+                          key: ValueKey('PendingRequestList'),
                         )
                       : const MyReimbursementList(
                           key: ValueKey('MyReimbursementList')),
@@ -87,30 +85,6 @@ class ReimbursementScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _showDetailModal(BuildContext context, String name, String description,
-      int amount, String date) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        minChildSize: 0.7,
-        maxChildSize: 0.75,
-        expand: false,
-        builder: (_, controller) => ReimbursementDetailModal(
-          controller: controller,
-          name: name,
-          description: description,
-          amount: amount,
-          date: date,
-        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
+import 'package:action_slider/action_slider.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 class HomeContent extends StatelessWidget {
@@ -13,71 +14,93 @@ class HomeContent extends StatelessWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ActionSlider.standard(
+                toggleColor: TSColors.background.b100,
+                backgroundColor: TSColors.secondary.s50,
+                icon: const Icon(Icons.arrow_forward_rounded),
+                backgroundBorderRadius: BorderRadius.circular(8),
+                foregroundBorderRadius: BorderRadius.circular(8),
+                child: const Body1.regular('Swipe to check in', fontSize: 18),
+                action: (controller) async {
+                  controller.loading();
+                  await Future.delayed(const Duration(seconds: 3));
+                  controller.success();
+                },
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SubHeadline.regular('Selamat pagi,',
-                        color: TSColors.primary.p100),
-                    H1('Muhammad Syehan', color: TSColors.primary.p100),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubHeadline.regular('Selamat pagi,',
+                            color: TSColors.primary.p100),
+                        H1('Muhammad Syehan', color: TSColors.primary.p100),
+                      ],
+                    ),
+                    CircleAvatar(
+                      backgroundColor: TSColors.secondary.s30,
+                      child: Image.asset(Assets.icons.notifications.path,
+                          color: TSColors.primary.p100, height: 20, width: 20),
+                    ),
                   ],
                 ),
-                CircleAvatar(
-                  backgroundColor: TSColors.secondary.s30,
-                  child: Image.asset(Assets.icons.notifications.path,
-                      color: TSColors.primary.p100, height: 20, width: 20),
+                const SizedBox(height: 20),
+                const RollCallCard(),
+                const SizedBox(height: 20),
+                const Text('Features',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildFeatureIcon(Assets.icons.earthAirplane.path, 'Leave',
+                        () {
+                      context.go('/leave');
+                    }),
+                    _buildFeatureIcon(Assets.icons.dollarCoin.path, 'Reimburse',
+                        () {
+                      context.go('/reimburse');
+                    }),
+                    _buildFeatureIcon(
+                        Assets.icons.userMultipleGroup.path, 'Member', () {}),
+                    _buildFeatureIcon(
+                        Assets.icons.newsPaper.path, 'News', () {}),
+                  ],
                 ),
+                const SizedBox(height: 20),
+                const Text('News',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Image.asset(Assets.images.assetHr01.path,
+                      fit: BoxFit.cover),
+                ),
+                const SizedBox(height: 20),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    H3('Colleagues'),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _buildCollaguesCard(),
               ],
             ),
-            const SizedBox(height: 20),
-            const RollCallCard(),
-            const SizedBox(height: 20),
-            const Text('Features',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildFeatureIcon(Assets.icons.earthAirplane.path, 'Leave', () {
-                  context.go('/leave');
-                }),
-                _buildFeatureIcon(Assets.icons.dollarCoin.path, 'Reimburse',
-                    () {
-                  context.go('/reimburse');
-                }),
-                _buildFeatureIcon(
-                    Assets.icons.userMultipleGroup.path, 'Member', () {}),
-                _buildFeatureIcon(Assets.icons.newsPaper.path, 'News', () {}),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text('News',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child:
-                  Image.asset(Assets.images.assetHr01.path, fit: BoxFit.cover),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const H3('Colleagues'),
-                Body1.regular('See All',
-                    color: TSColors.primary.p100, fontSize: 16),
-              ],
-            ),
-            const SizedBox(height: 10),
-            _buildCollaguesCard(),
           ],
         ),
       ),
