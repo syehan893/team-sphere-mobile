@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/views/screens/auth/login_form.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
@@ -28,7 +29,22 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: TSColors.background.b100,
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
+          if (state.status == AuthStatus.loading) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Center(
+                  child: LoadingAnimationWidget.progressiveDots(
+                    color: TSColors.primary.p100,
+                    size: 50,
+                  ),
+                );
+              },
+            );
+          }
           if (state.status == AuthStatus.authenticated) {
+            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Authentication successful')),
             );

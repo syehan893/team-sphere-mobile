@@ -83,12 +83,18 @@ class HomeContent extends StatelessWidget {
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 Container(
-                  height: 150,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Image.asset(Assets.images.assetHr01.path,
-                      fit: BoxFit.cover),
+                  child:  ImageCarousel(
+                    images: const [
+                      'https://gqrrkswdhnhahfvgjzkj.supabase.co/storage/v1/object/public/company_news/news-1.png',
+                      'https://gqrrkswdhnhahfvgjzkj.supabase.co/storage/v1/object/public/company_news/news-2.png'
+                    ],
+                    onTap: (index) {
+                      context.go('/news');
+                    },
+                  ),
                 ),
                 const SizedBox(height: 20),
                 const Row(

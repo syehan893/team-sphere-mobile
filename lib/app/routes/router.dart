@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:team_sphere_mobile/views/screens/news/news_detail_screen.dart';
 import 'package:team_sphere_mobile/views/screens/screen.dart';
 
 final GoRouter router = GoRouter(
@@ -43,6 +44,20 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: 'request',
+              builder: (BuildContext context, GoRouterState state) {
+                return const ReimbursementRequestScreen();
+              },
+            ),
+          ],
+        ),
+         GoRoute(
+          path: 'news',
+          builder: (BuildContext context, GoRouterState state) {
+            return const NewsDetailScreen();
+          },
+          routes: [
+            GoRoute(
+              path: 'detail',
               builder: (BuildContext context, GoRouterState state) {
                 return const ReimbursementRequestScreen();
               },
