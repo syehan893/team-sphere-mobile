@@ -195,7 +195,7 @@ Future<void> showAlertDialog(
                   height: 48,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: buttons.map((e) => e).toList() as List<Widget>,
+                    children: buttons.map((e) => e).toList(),
                   ),
                 )
               ]
