@@ -74,6 +74,18 @@ class Util {
     return formatter.format(number).replaceAll(',', '.');
   }
 
+  static String formatStandartTimestamp(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    return DateFormat('yyyy-M-dd').format(dateTime);
+  }
+
+  static String formatTimestamp(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    return DateFormat('yyyy-M-ddTHH:mm:ss').format(dateTime);
+  }
+
   static String formatDateRange(String startDate, String endDate) {
     final start = DateTime.parse(startDate);
     final end = DateTime.parse(endDate);
@@ -96,7 +108,7 @@ class Util {
     return formattedStart;
   }
 
-    static String formatDateFullVersion(String startDate) {
+  static String formatDateFullVersion(String startDate) {
     final start = DateTime.parse(startDate);
 
     final dateFormat = DateFormat('dd MMMM yyyy');

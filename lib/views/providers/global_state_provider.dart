@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:team_sphere_mobile/core/helpers/utils.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
 
 import '../cubits/cubit.dart';
@@ -19,9 +20,13 @@ class GlobalStateProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<HomeCubit>()),
         BlocProvider(create: (context) => getIt<EmployeeCubit>()),
         BlocProvider(create: (context) => getIt<EmployeeAvatarCubit>()),
-        BlocProvider(create: (context) => getIt<FetchReimbursementRequestCubit>()),
+        BlocProvider(
+            create: (context) => getIt<FetchReimbursementRequestCubit>()),
         BlocProvider(create: (context) => getIt<FetchLeaveRequestCubit>()),
-        BlocProvider(create: (context) => getIt<EmployeeRollCallCubit>()),
+        BlocProvider(
+            create: (context) => getIt<EmployeeRollCallCubit>()
+              ..getEmployeeRollCallsByDay(
+                  Util.formatDateStandard(DateTime.now().toString()))),
       ],
       child: child,
     );

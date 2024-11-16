@@ -11,12 +11,16 @@ class EmployeeRollCallDataSource {
 
   Future<List<EmployeeRollCall>> getEmployeeRollCallsByDay(String day) async {
     final response = await _apiClient.get('/employee-roll-calls?day=$day');
-    
+
     if (response.statusCode == 200) {
       final data = response.data as List;
       return data.map((json) => EmployeeRollCall.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch employee roll call data');
     }
+  }
+
+  Future<void> saveRollCall(EmployeeRollCall rollCall) async {
+    await _apiClient.post('/employee-roll-calls', rollCall.toJson());
   }
 }

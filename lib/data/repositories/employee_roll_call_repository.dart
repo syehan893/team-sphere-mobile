@@ -11,4 +11,8 @@ class EmployeeRollCallRepository {
   Future<List<EmployeeRollCall>> getEmployeeRollCallsByDay(String day) {
     return _dataSource.getEmployeeRollCallsByDay(day);
   }
+
+  Future<void> saveRollCall(EmployeeRollCall rollCall) {
+    return _dataSource.saveRollCall(rollCall);
+  }
 }

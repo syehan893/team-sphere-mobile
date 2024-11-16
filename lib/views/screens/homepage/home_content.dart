@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
+import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
+import 'package:team_sphere_mobile/core/helpers/utils.dart';
+import 'package:team_sphere_mobile/data/data.dart';
 import 'package:team_sphere_mobile/gen/assets.gen.dart';
 import 'package:action_slider/action_slider.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
+
+import '../../cubits/cubit.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
@@ -96,23 +102,50 @@ class HomeContent extends StatelessWidget {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ActionSlider.standard(
-                toggleColor: TSColors.background.b100,
-                backgroundColor: TSColors.primary.p100,
-                icon: const Icon(Icons.arrow_forward_rounded),
-                backgroundBorderRadius: BorderRadius.circular(8),
-                foregroundBorderRadius: BorderRadius.circular(8),
-                child: const Body1.regular('Swipe to check in',
-                    fontSize: 18, color: Colors.white),
-                action: (controller) async {
-                  controller.addListener(() {});
-                  controller.loading();
-                  await Future.delayed(const Duration(seconds: 3));
-                  controller.success();
-                },
-              ),
+            BlocBuilder<EmployeeCubit, EmployeeState>(
+              builder: (context, state) {
+                if (state is EmployeeLoaded) {
+                  final employee = state.employee;
+                  return BlocBuilder<EmployeeRollCallCubit,
+                      EmployeeRollCallState>(
+                    builder: (context, state) {
+                      final notRollCalled = state.rollCalls != [] &&
+                              state.rollCalls != null
+                          ? state.rollCalls!
+                              .where((e) => e.employeeId == employee.employeeId)
+                              .isEmpty
+                          : false;
+                      if (state.status == FetchStatus.loaded && notRollCalled) {
+                        return Align(
+                          alignment: Alignment.bottomCenter,
+                          child: ActionSlider.standard(
+                            toggleColor: TSColors.background.b100,
+                            backgroundColor: TSColors.primary.p100,
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                            backgroundBorderRadius: BorderRadius.circular(8),
+                            foregroundBorderRadius: BorderRadius.circular(8),
+                            child: const Body1.regular('Swipe to check in',
+                                fontSize: 18, color: Colors.white),
+                            action: (controller) async {
+                              controller.loading();
+                              await saveRollCall(context, employee);
+                              controller.success();
+                              // ignore: use_build_context_synchronously
+                              context
+                                  .read<EmployeeRollCallCubit>()
+                                  .getEmployeeRollCallsByDay(
+                                      Util.formatDateStandard(
+                                          DateTime.now().toString()));
+                            },
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  );
+                }
+                return const SizedBox.shrink();
+              },
             )
           ],
         ),
@@ -120,27 +153,59 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  Container _buildCollaguesCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: TSColors.secondary.s70),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Row(
-        children: [
-          EmployeeAvatar(email: 'syehan@gmail.com', radius: 24),
-          SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              H3('Muhammad Syehan'),
-              Body1.regular('Software Engineer'),
-            ],
-          ),
-        ],
-      ),
+  Future<void> saveRollCall(BuildContext context, Employee employee) async {
+    await context.read<EmployeeRollCallCubit>().saveRollCall(EmployeeRollCall(
+          employeeId: employee.employeeId,
+          date: Util.formatStandartTimestamp(DateTime.now().toString()),
+          timeIn: Util.formatTimestamp(DateTime.now().toString()),
+          status: "Present",
+          notes: "N/A",
+          employee: employee,
+        ));
+  }
+
+  Widget _buildCollaguesCard() {
+    return BlocBuilder<EmployeeRollCallCubit, EmployeeRollCallState>(
+      builder: (context, state) {
+        if (state.status == FetchStatus.loaded) {
+          if (state.rollCalls!.isNotEmpty && state.rollCalls != null) {
+            return Column(
+              children: [
+                ...List.generate(
+                  state.rollCalls?.length ?? 0,
+                  (index) {
+                    final rollCall = state.rollCalls?[index];
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: TSColors.secondary.s70),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          EmployeeAvatar(
+                              email: rollCall!.employee.email, radius: 24),
+                          const SizedBox(width: 16),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              H3('${rollCall.employee.firstName} ${rollCall.employee.lastName}'),
+                              Body1.regular(rollCall.employee.jobTitle),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+              ],
+            );
+          }
+          return const SizedBox.shrink();
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

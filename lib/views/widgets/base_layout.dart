@@ -234,7 +234,7 @@ class _BaseLayoutState extends State<BaseLayout> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (value, val) {
+      onPopInvoked: (val) {
         if (widget.onBackTap != null) {
           widget.onBackTap!();
         } else {
