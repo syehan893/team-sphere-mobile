@@ -24,7 +24,7 @@ class ReimbursementRequestRepository {
     return _dataSource.createReimbursementRequest(reimbursementRequest);
   }
 
-  Future<void> updateReimbursementRequest(int requestId, Map<String, dynamic> data) {
-    return _dataSource.updateReimbursementRequest(requestId, data);
+  Future<void> updateReimbursementRequest(ReimbursementRequest reimbursementRequest) {
+    return _dataSource.updateReimbursementRequest(reimbursementRequest);
   }
 }

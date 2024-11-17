@@ -30,29 +30,44 @@ class LeaveRequestContent extends StatelessWidget {
     return BaseLayout(
       title: 'Leave Request',
       useBackButton: true,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<CreateLeaveRequestCubit, CreateLeaveRequestState>(
-          builder: (context, state) {
-            if (state.status == CreationStatus.loading) {
-              return Center(
-                  child: LoadingAnimationWidget.progressiveDots(
+      resizeAvoidButton: false,
+      body: BlocConsumer<CreateLeaveRequestCubit, CreateLeaveRequestState>(
+        listener: (context, state) {
+          if (state.status == CreationStatus.success) {
+            CustomToast.showToast(
+                context, 'Leave Requested', TSColors.alert.green700);
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
+          if (state.status == CreationStatus.error) {
+            CustomToast.showToast(
+                context, 'Leave Request failed', TSColors.alert.red700);
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          if (state.status == CreationStatus.loading) {
+            return Center(
+              child: LoadingAnimationWidget.progressiveDots(
                 color: TSColors.primary.p100,
                 size: 50,
-              ));
-            }
-            return BlocBuilder<EmployeeCubit, EmployeeState>(
-              builder: (context, employeeState) {
-                if (employeeState is EmployeeLoaded) {
-                  context.read<CreateLeaveRequestCubit>().updateManagerId(
-                      employeeState.employee.managerId ??
-                          employeeState.employee.employeeId);
-                  context
-                      .read<CreateLeaveRequestCubit>()
-                      .updateEmployeeId(employeeState.employee.employeeId);
-                }
+              ),
+            );
+          }
+          return BlocBuilder<EmployeeCubit, EmployeeState>(
+            builder: (context, employeeState) {
+              if (employeeState is EmployeeLoaded) {
+                context.read<CreateLeaveRequestCubit>().updateManagerId(
+                    employeeState.employee.managerId ??
+                        employeeState.employee.employeeId);
+                context
+                    .read<CreateLeaveRequestCubit>()
+                    .updateEmployeeId(employeeState.employee.employeeId);
+              }
 
-                return Column(
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -97,11 +112,11 @@ class LeaveRequestContent extends StatelessWidget {
                     const Spacer(),
                     _buildSubmitButton(context, state),
                   ],
-                );
-              },
-            );
-          },
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

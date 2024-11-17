@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/views/cubits/cubit.dart';
+import 'package:team_sphere_mobile/views/screens/leave/leave_shimmer.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import 'leave_list_screen.dart';
@@ -49,13 +48,11 @@ class LeaveScreen extends StatelessWidget {
                           if (index == 1) {
                             context
                                 .read<FetchLeaveRequestCubit>()
-                                .fetchLeaveRequestsByManagerId(
-                                    state.employee.employeeId);
+                                .fetchLeaveRequestsByManagerId();
                           } else {
                             context
                                 .read<FetchLeaveRequestCubit>()
-                                .fetchLeaveRequestsByEmployeeId(
-                                    state.employee.employeeId);
+                                .fetchLeaveRequestsByEmployeeId();
                           }
 
                           _showPendingRequestsNotifier.value = index == 1;
@@ -112,8 +109,9 @@ class LeaveCircle extends StatelessWidget {
             final annualData = state.leaveRequests
                 ?.where((e) => e.leaveType == 'Annual Leave')
                 .length;
-            final sickData =
-                state.leaveRequests?.where((e) => e.leaveType == 'Sick Leave').length;
+            final sickData = state.leaveRequests
+                ?.where((e) => e.leaveType == 'Sick Leave')
+                .length;
             final specialData = state.leaveRequests
                 ?.where((e) => e.leaveType == 'Special Leave')
                 .length;
@@ -133,11 +131,7 @@ class LeaveCircle extends StatelessWidget {
               ),
             );
           }
-          return Center(
-              child: LoadingAnimationWidget.progressiveDots(
-            color: TSColors.primary.p100,
-            size: 50,
-          ));
+          return const ShimmerPieChart();
         },
       ),
     );

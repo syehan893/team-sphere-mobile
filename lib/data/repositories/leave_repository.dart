@@ -24,7 +24,7 @@ class LeaveRequestRepository {
     return _dataSource.createLeaveRequest(leaveRequest);
   }
 
-  Future<void> updateLeaveRequest(int requestId, Map<String, dynamic> data) {
-    return _dataSource.updateLeaveRequest(requestId, data);
+  Future<void> updateLeaveRequest(LeaveRequest leaveRequest) {
+    return _dataSource.updateLeaveRequest(leaveRequest);
   }
 }

@@ -9,6 +9,7 @@ import '../../data/data.dart';
 
 class CreateReimbursementRequestState extends Equatable {
   final CreationStatus status;
+  final CreationStatus updateStatus;
   final FetchStatus downloadFileStatus;
   final ReimbursementRequest reimbursementRequest;
   final String? error;
@@ -18,6 +19,7 @@ class CreateReimbursementRequestState extends Equatable {
 
   const CreateReimbursementRequestState({
     this.status = CreationStatus.initial,
+    this.updateStatus = CreationStatus.initial,
     this.downloadFileStatus = FetchStatus.initial,
     required this.reimbursementRequest,
     this.error,
@@ -34,9 +36,11 @@ class CreateReimbursementRequestState extends Equatable {
     String? fileName,
     Uint8List? fileBytes,
     String? filePublicUrl,
+    CreationStatus? updateStatus,
   }) {
     return CreateReimbursementRequestState(
       status: status ?? this.status,
+      updateStatus: updateStatus ?? this.updateStatus,
       reimbursementRequest: reimbursementRequest ?? this.reimbursementRequest,
       downloadFileStatus: downloadFileStatus ?? this.downloadFileStatus,
       error: error ?? this.error,
@@ -50,6 +54,7 @@ class CreateReimbursementRequestState extends Equatable {
   List<Object?> get props {
     return [
       status,
+      updateStatus,
       reimbursementRequest,
       downloadFileStatus,
       error,
@@ -109,6 +114,19 @@ class CreateReimbursementRequestCubit
     } catch (e) {
       emit(state.copyWith(
         status: CreationStatus.error,
+        error: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> updateReimbursementRequest(ReimbursementRequest reimbursementRequest, String status) async {
+    emit(state.copyWith(updateStatus: CreationStatus.loading));
+    try {
+      await _repository.updateReimbursementRequest(reimbursementRequest.copyWith(status: status));
+      emit(state.copyWith(updateStatus: CreationStatus.success));
+    } catch (e) {
+      emit(state.copyWith(
+        updateStatus: CreationStatus.error,
         error: e.toString(),
       ));
     }

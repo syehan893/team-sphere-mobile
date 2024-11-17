@@ -6,23 +6,27 @@ import '../../data/data.dart';
 
 class CreateLeaveRequestState {
   final CreationStatus status;
+  final CreationStatus updateStatus;
   final LeaveRequest leaveRequest;
   final String? error;
 
   CreateLeaveRequestState({
     this.status = CreationStatus.initial,
+    this.updateStatus = CreationStatus.initial,
     required this.leaveRequest,
     this.error,
   });
 
   CreateLeaveRequestState copyWith({
     CreationStatus? status,
+    CreationStatus? updateStatus,
     LeaveRequest? leaveRequest,
     String? error,
   }) {
     return CreateLeaveRequestState(
       status: status ?? this.status,
       leaveRequest: leaveRequest ?? this.leaveRequest,
+      updateStatus: updateStatus ?? this.updateStatus,
       error: error,
     );
   }
@@ -93,6 +97,18 @@ class CreateLeaveRequestCubit extends Cubit<CreateLeaveRequestState> {
       emit(state.copyWith(status: CreationStatus.success));
     } catch (e) {
       emit(state.copyWith(status: CreationStatus.error, error: e.toString()));
+    }
+  }
+
+  Future<void> updateLeaveRequest(
+      LeaveRequest leaveRequest, String status) async {
+    emit(state.copyWith(updateStatus: CreationStatus.loading));
+    try {
+      await _repository
+          .updateLeaveRequest(leaveRequest.copyWith(status: status));
+      emit(state.copyWith(updateStatus: CreationStatus.success));
+    } catch (e) {
+      emit(state.copyWith(updateStatus: CreationStatus.error, error: e.toString()));
     }
   }
 }

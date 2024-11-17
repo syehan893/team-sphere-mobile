@@ -26,26 +26,7 @@ class HomeContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SubHeadline.regular('Selamat pagi,',
-                              color: TSColors.primary.p100),
-                          H1('Muhammad Syehan', color: TSColors.primary.p100),
-                        ],
-                      ),
-                      CircleAvatar(
-                        backgroundColor: TSColors.secondary.s30,
-                        child: Image.asset(Assets.icons.notifications.path,
-                            color: TSColors.primary.p100,
-                            height: 20,
-                            width: 20),
-                      ),
-                    ],
-                  ),
+                  const DynamicGreetingWidget(name: 'Muhammad Syehan'),
                   const SizedBox(height: 20),
                   const RollCallCard(),
                   const SizedBox(height: 20),

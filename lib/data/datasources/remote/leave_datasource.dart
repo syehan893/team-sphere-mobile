@@ -9,14 +9,21 @@ class LeaveRequestDataSource {
 
   LeaveRequestDataSource(this._apiClient);
 
-  Future<List<LeaveRequest>> getLeaveRequestsByEmployeeId(String employeeId) async {
-    final response = await _apiClient.get('/leave-requests/employee/$employeeId');
-    return (response.data as List).map((json) => LeaveRequest.fromJson(json)).toList();
+  Future<List<LeaveRequest>> getLeaveRequestsByEmployeeId(
+      String employeeId) async {
+    final response =
+        await _apiClient.get('/leave-requests/employee/$employeeId');
+    return (response.data as List)
+        .map((json) => LeaveRequest.fromJson(json))
+        .toList();
   }
 
-  Future<List<LeaveRequest>> getLeaveRequestsByManagerId(String managerId) async {
+  Future<List<LeaveRequest>> getLeaveRequestsByManagerId(
+      String managerId) async {
     final response = await _apiClient.get('/leave-requests/manager/$managerId');
-    return (response.data as List).map((json) => LeaveRequest.fromJson(json)).toList();
+    return (response.data as List)
+        .map((json) => LeaveRequest.fromJson(json))
+        .toList();
   }
 
   Future<LeaveRequest> getLeaveRequestById(int requestId) async {
@@ -28,7 +35,8 @@ class LeaveRequestDataSource {
     await _apiClient.post('/leave-requests', leaveRequest.toJson());
   }
 
-  Future<void> updateLeaveRequest(int requestId, Map<String, dynamic> data) async {
-    await _apiClient.put('/leave-requests/$requestId', data);
+  Future<void> updateLeaveRequest(LeaveRequest leaveRequest) async {
+    await _apiClient.put('/leave-requests/${leaveRequest.requestId}',
+        leaveRequest.toUpdateJson());
   }
 }

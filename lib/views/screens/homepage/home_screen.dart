@@ -44,13 +44,12 @@ class HomeScreenState extends State<HomeScreen> {
     return BlocListener<EmployeeCubit, EmployeeState>(
       listener: (context, state) {
         if (state is EmployeeLoaded) {
-          String employeeId = state.employee.employeeId;
           context.read<FetchLeaveRequestCubit>()
-            ..fetchLeaveRequestsByEmployeeId(employeeId)
-            ..fetchLeaveRequestsByManagerId(employeeId);
+            ..fetchLeaveRequestsByEmployeeId()
+            ..fetchLeaveRequestsByManagerId();
           context.read<FetchReimbursementRequestCubit>()
-            ..fetchReimbursementRequestsByEmployeeId(employeeId)
-            ..fetchReimbursementRequestsByManagerId(employeeId);
+            ..fetchReimbursementRequestsByEmployeeId()
+            ..fetchReimbursementRequestsByManagerId();
         }
       },
       child: BlocBuilder<HomeCubit, HomeState>(

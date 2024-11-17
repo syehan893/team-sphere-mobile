@@ -1,6 +1,7 @@
 // /lib/cubit/employee_cubit.dart
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/data.dart';
 
@@ -32,6 +33,9 @@ class EmployeeCubit extends Cubit<EmployeeState> {
     emit(EmployeeLoading());
     try {
       final employee = await _repository.getEmployeeByEmail();
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('employeeId', employee.employeeId);
+      await prefs.setString('managerId', employee.managerId ?? '');
       emit(EmployeeLoaded(employee));
     } catch (e) {
       emit(EmployeeError(e.toString()));

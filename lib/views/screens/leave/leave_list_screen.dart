@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/core/enums/leave_enum.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
@@ -8,6 +7,7 @@ import 'package:team_sphere_mobile/core/helpers/utils.dart';
 import '../../../app/themes/themes.dart';
 import '../../cubits/cubit.dart';
 import '../../widgets/widgets.dart';
+import 'leave_shimmer.dart';
 
 class MyLeavesList extends StatelessWidget {
   const MyLeavesList({super.key});
@@ -22,11 +22,7 @@ class MyLeavesList extends StatelessWidget {
           );
         }
         if (state.employeeFetchStatus == FetchStatus.loading) {
-          return Center(
-              child: LoadingAnimationWidget.progressiveDots(
-            color: TSColors.primary.p100,
-            size: 50,
-          ));
+          return const LeaveCardShimmerList(itemCount: 10);
         }
         if (state.employeeFetchStatus == FetchStatus.loaded) {
           final listLeave = state.leaveRequests ?? [];
@@ -44,7 +40,7 @@ class MyLeavesList extends StatelessWidget {
                     type: leave.leaveType,
                     date: Util.formatDateRange(leave.startDate.toString(), leave.endDate.toString()),
                     status:
-                        LeaveStatusMapper.stringToLeaveStatus(leave.leaveType));
+                        LeaveStatusMapper.stringToLeaveStatus(leave.status));
               },
             ),
           );

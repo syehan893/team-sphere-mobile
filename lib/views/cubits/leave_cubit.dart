@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import '../../data/data.dart';
 
@@ -42,9 +43,11 @@ class FetchLeaveRequestCubit extends Cubit<FetchLeaveRequestState> {
 
   FetchLeaveRequestCubit(this._repository) : super(FetchLeaveRequestState());
 
-  Future<void> fetchLeaveRequestsByEmployeeId(String employeeId) async {
+  Future<void> fetchLeaveRequestsByEmployeeId() async {
     emit(state.copyWith(employeeFetchStatus: FetchStatus.loading));
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final employeeId = prefs.getString('employeeId') ?? '';
       final leaveRequests =
           await _repository.getLeaveRequestsByEmployeeId(employeeId);
       emit(state.copyWith(
@@ -59,14 +62,17 @@ class FetchLeaveRequestCubit extends Cubit<FetchLeaveRequestState> {
     }
   }
 
-  Future<void> fetchLeaveRequestsByManagerId(String employeeId) async {
+  Future<void> fetchLeaveRequestsByManagerId() async {
     emit(state.copyWith(managerFetchStatus: FetchStatus.loading));
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final managerId = prefs.getString('managerId') ?? '';
       final leaveRequests =
-          await _repository.getLeaveRequestsByManagerId(employeeId);
+          await _repository.getLeaveRequestsByManagerId(managerId);
       emit(state.copyWith(
         managerFetchStatus: FetchStatus.loaded,
-        approvalLeaveRequests: leaveRequests,
+        approvalLeaveRequests:
+            leaveRequests.where((e) => e.status == 'Pending').toList(),
       ));
     } catch (e) {
       emit(state.copyWith(

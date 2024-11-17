@@ -6,6 +6,7 @@ import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
 import 'package:team_sphere_mobile/core/enums/leave_enum.dart';
+import 'package:team_sphere_mobile/views/screens/reimbursement/reimbursement_shimmer.dart';
 
 import '../../cubits/cubit.dart';
 import '../../widgets/widgets.dart';
@@ -24,11 +25,7 @@ class MyReimbursementList extends StatelessWidget {
           );
         }
         if (state.employeeFetchStatus == FetchStatus.loading) {
-          return Center(
-              child: LoadingAnimationWidget.progressiveDots(
-            color: TSColors.primary.p100,
-            size: 50,
-          ));
+          return const ReimbursementCardShimmerList(itemCount: 10);
         }
         if (state.employeeFetchStatus == FetchStatus.loaded) {
           final listReimbursment = state.reimbursementRequests ?? [];

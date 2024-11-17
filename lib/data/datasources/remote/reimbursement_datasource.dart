@@ -29,7 +29,7 @@ class ReimbursementRequestDataSource {
     await _apiClient.post('/reimbursement-requests', reimbursementRequest.toJson());
   }
 
-  Future<void> updateReimbursementRequest(int requestId, Map<String, dynamic> data) async {
-    await _apiClient.put('/reimbursement-requests/$requestId', data);
+  Future<void> updateReimbursementRequest(ReimbursementRequest reimbursementRequest) async {
+    await _apiClient.put('/reimbursement-requests/${reimbursementRequest.requestId}', reimbursementRequest.toUpdateJson());
   }
 }

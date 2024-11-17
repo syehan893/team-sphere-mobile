@@ -39,13 +39,11 @@ class ReimbursementScreen extends StatelessWidget {
                         if (index == 1) {
                           context
                               .read<FetchReimbursementRequestCubit>()
-                              .fetchReimbursementRequestsByManagerId(
-                                  state.employee.employeeId);
+                              .fetchReimbursementRequestsByManagerId();
                         } else {
                           context
                               .read<FetchReimbursementRequestCubit>()
-                              .fetchReimbursementRequestsByEmployeeId(
-                                  state.employee.employeeId);
+                              .fetchReimbursementRequestsByEmployeeId();
                         }
 
                         _showPendingRequestsNotifier.value = index == 1;

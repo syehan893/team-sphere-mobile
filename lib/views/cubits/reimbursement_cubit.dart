@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import '../../data/data.dart';
 
@@ -45,9 +46,11 @@ class FetchReimbursementRequestCubit
   FetchReimbursementRequestCubit(this._repository)
       : super(FetchReimbursementRequestState());
 
-  Future<void> fetchReimbursementRequestsByEmployeeId(String employeeId) async {
+  Future<void> fetchReimbursementRequestsByEmployeeId() async {
     emit(state.copyWith(employeeFetchStatus: FetchStatus.loading));
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final employeeId = prefs.getString('employeeId') ?? '';
       final reimbursementRequests =
           await _repository.getReimbursementRequestsByEmployeeId(employeeId);
       emit(state.copyWith(
@@ -62,14 +65,16 @@ class FetchReimbursementRequestCubit
     }
   }
 
-  Future<void> fetchReimbursementRequestsByManagerId(String employeeId) async {
+  Future<void> fetchReimbursementRequestsByManagerId() async {
     emit(state.copyWith(managerFetchStatus: FetchStatus.loading));
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final managerId = prefs.getString('managerId') ?? '';
       final reimbursementRequests =
-          await _repository.getReimbursementRequestsByManagerId(employeeId);
+          await _repository.getReimbursementRequestsByManagerId(managerId);
       emit(state.copyWith(
         managerFetchStatus: FetchStatus.loaded,
-        approvalReimbursementRequests: reimbursementRequests,
+        approvalReimbursementRequests: reimbursementRequests.where((e) => e.status == 'Pending').toList(),
       ));
     } catch (e) {
       emit(state.copyWith(

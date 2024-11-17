@@ -36,20 +36,29 @@ class LeaveRequest extends Equatable {
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) {
     return LeaveRequest(
-      requestId: json['request_id'],
-      employeeId: json['employee_id'],
-      leaveType: json['leave_type'],
-      startDate: json['start_date'] != null ?  DateTime.parse(json['start_date']) : DateTime.now(),
-      endDate: json['end_date'] != null ?  DateTime.parse(json['end_date']) : DateTime.now(),
-      totalDays: json['total_days'],
-      reason: json['reason'],
-      status: json['status'],
-      managerId: json['manager_id'],
-      managerComment: json['manager_comment'],
-      createdAt: json['created_at'] != null ?  DateTime.parse(json['created_at']) : DateTime.now(),
-      updatedAt: json['updated_at'] != null ?  DateTime.parse(json['updated_at']) : DateTime.now(),
-      employee: json['employee'] != null ? Employee.fromJson(json['employee']) : null
-    );
+        requestId: json['request_id'],
+        employeeId: json['employee_id'],
+        leaveType: json['leave_type'],
+        startDate: json['start_date'] != null
+            ? DateTime.parse(json['start_date'])
+            : DateTime.now(),
+        endDate: json['end_date'] != null
+            ? DateTime.parse(json['end_date'])
+            : DateTime.now(),
+        totalDays: json['total_days'],
+        reason: json['reason'],
+        status: json['status'],
+        managerId: json['manager_id'],
+        managerComment: json['manager_comment'],
+        createdAt: json['created_at'] != null
+            ? DateTime.parse(json['created_at'])
+            : DateTime.now(),
+        updatedAt: json['updated_at'] != null
+            ? DateTime.parse(json['updated_at'])
+            : DateTime.now(),
+        employee: json['employee'] != null
+            ? Employee.fromJson(json['employee'])
+            : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -68,6 +77,22 @@ class LeaveRequest extends Equatable {
     };
   }
 
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'request_id': requestId,
+      'employee_id': employeeId,
+      'leave_type': leaveType,
+      'start_date': startDate.toString(),
+      'end_date': endDate.toString(),
+      'total_days': totalDays,
+      'reason': reason,
+      'status': status,
+      'manager_id': managerId,
+      'manager_comment': managerComment,
+      'created_at': createdAt.toString(),
+      'updated_at': updatedAt.toString(),
+    };
+  }
 
   @override
   List<Object?> get props {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/app/themes/responsive.dart';
 import 'package:team_sphere_mobile/core/constant/strings.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/core/helpers/utils.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
 import 'package:team_sphere_mobile/views/screens/reimbursement/reimbursement_detail_modal.dart';
+import 'package:team_sphere_mobile/views/screens/reimbursement/reimbursement_shimmer.dart';
 
 import '../../../app/themes/themes.dart';
 import '../../../data/data.dart';
@@ -21,19 +21,15 @@ class PendingRequestList extends StatelessWidget {
     return BlocBuilder<FetchReimbursementRequestCubit,
         FetchReimbursementRequestState>(
       builder: (context, state) {
-        if (state.employeeFetchStatus == FetchStatus.error) {
+        if (state.managerFetchStatus == FetchStatus.error) {
           return const Center(
             child: Body1.regular('Data Not Found', fontSize: 14),
           );
         }
-        if (state.employeeFetchStatus == FetchStatus.loading) {
-          return Center(
-              child: LoadingAnimationWidget.progressiveDots(
-            color: TSColors.primary.p100,
-            size: 50,
-          ));
+        if (state.managerFetchStatus == FetchStatus.loading) {
+          return const PendingRequestCardShimmerList(itemCount: 10);
         }
-        if (state.employeeFetchStatus == FetchStatus.loaded) {
+        if (state.managerFetchStatus == FetchStatus.loaded) {
           final listReimbursment = state.approvalReimbursementRequests ?? [];
           if (listReimbursment.isEmpty) {
             return const Center(
@@ -144,9 +140,11 @@ class PendingRequestCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Body1.bold(name,
-                          fontSize: 14, overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: responsive.widthPercentage(50),
+                        child: Body1.bold(name,
+                            fontSize: 14, overflow: TextOverflow.ellipsis),
+                      ),
                       Body1.regular(date),
                     ],
                   ),

@@ -4,11 +4,11 @@ class LeaveStatusMapper {
   static String leaveStatusToString(LeaveStatus status) {
     switch (status) {
       case LeaveStatus.approved:
-        return 'approved';
+        return 'Approved';
       case LeaveStatus.pending:
-        return 'pending';
+        return 'Pending';
       case LeaveStatus.declined:
-        return 'declined';
+        return 'Declined';
       default:
         return '';
     }
@@ -16,11 +16,11 @@ class LeaveStatusMapper {
 
   static LeaveStatus stringToLeaveStatus(String status) {
     switch (status) {
-      case 'approved':
+      case 'Approved':
         return LeaveStatus.approved;
-      case 'pending':
+      case 'Pending':
         return LeaveStatus.pending;
-      case 'declined':
+      case 'Declined':
         return LeaveStatus.declined;
       default:
         return LeaveStatus.pending;

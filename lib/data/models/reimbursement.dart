@@ -84,6 +84,25 @@ class ReimbursementRequest extends Equatable {
     };
   }
 
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'request_id': requestId,
+      'employee_id': employeeId,
+      'request_date': requestDate.toString(),
+      'expense_date': expenseDate.toString(),
+      'expense_type': expenseType,
+      'amount': amount,
+      'currency': currency,
+      'description': description,
+      'receipt_file_path': receiptFilePath,
+      'status': status,
+      'manager_id': managerId,
+      'manager_comment': managerComment,
+      'created_at': createdAt.toString(),
+      'updated_at': updatedAt.toString(),
+    };
+  }
+
   @override
   List<Object?> get props {
     return [
