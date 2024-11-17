@@ -69,11 +69,9 @@ class ReimbursementRequestContent extends StatelessWidget {
             builder: (context, employeeState) {
               if (employeeState is EmployeeLoaded) {
                 context.read<CreateReimbursementRequestCubit>().updateField(
-                    employeeId: employeeState.employee.managerId ??
-                        employeeState.employee.employeeId);
-                context
-                    .read<CreateReimbursementRequestCubit>()
-                    .updateField(managerId: employeeState.employee.employeeId);
+                    employeeId: employeeState.employee.employeeId,
+                    managerId: employeeState.employee.managerId,
+                );
               }
               return Padding(
                 padding: const EdgeInsets.all(16.0),

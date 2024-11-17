@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/views/screens/news/news_detail_screen.dart';
 import 'package:team_sphere_mobile/views/screens/screen.dart';
 
+import '../../views/screens/profile/privacy_and_policy.dart';
+import '../../views/screens/profile/term_and_condition.dart';
+
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
@@ -50,7 +53,7 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-         GoRoute(
+        GoRoute(
           path: 'news',
           builder: (BuildContext context, GoRouterState state) {
             return const NewsDetailScreen();
@@ -63,6 +66,18 @@ final GoRouter router = GoRouter(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: 'terms',
+          builder: (BuildContext context, GoRouterState state) {
+            return const TermsAndConditionScreen();
+          },
+        ),
+        GoRoute(
+          path: 'policy',
+          builder: (BuildContext context, GoRouterState state) {
+            return const PrivacyAndPolicyScreen();
+          },
         ),
       ],
     ),

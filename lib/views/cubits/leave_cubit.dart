@@ -66,7 +66,7 @@ class FetchLeaveRequestCubit extends Cubit<FetchLeaveRequestState> {
     emit(state.copyWith(managerFetchStatus: FetchStatus.loading));
     try {
       final prefs = await SharedPreferences.getInstance();
-      final managerId = prefs.getString('managerId') ?? '';
+      final managerId = prefs.getString('employeeId') ?? '';
       final leaveRequests =
           await _repository.getLeaveRequestsByManagerId(managerId);
       emit(state.copyWith(

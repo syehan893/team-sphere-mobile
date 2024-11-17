@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
@@ -51,9 +52,13 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     _buildOptionTile(Icons.person, 'My Profile', () {}),
                     _buildOptionTile(
-                        Icons.description, 'Terms & Condition', () {}),
+                        Icons.description, 'Terms & Condition', () {
+                          context.go('/terms');
+                    }),
                     _buildOptionTile(
-                        Icons.privacy_tip, 'Privacy Policy', () {}),
+                        Icons.privacy_tip, 'Privacy Policy', () {
+                      context.go('/policy');
+                    }),
                     _buildOptionTile(Icons.logout, 'Logout', () {
                       context.read<AuthCubit>().signOut();
                     }, isLogout: true),

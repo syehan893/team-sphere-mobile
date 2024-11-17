@@ -69,7 +69,7 @@ class FetchReimbursementRequestCubit
     emit(state.copyWith(managerFetchStatus: FetchStatus.loading));
     try {
       final prefs = await SharedPreferences.getInstance();
-      final managerId = prefs.getString('managerId') ?? '';
+      final managerId = prefs.getString('employeeId') ?? '';
       final reimbursementRequests =
           await _repository.getReimbursementRequestsByManagerId(managerId);
       emit(state.copyWith(

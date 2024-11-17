@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/app/themes/responsive.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';

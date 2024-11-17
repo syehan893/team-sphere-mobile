@@ -18,7 +18,7 @@ class GlobalStateProvider extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()),
         BlocProvider(create: (context) => getIt<HomeCubit>()),
-        BlocProvider(create: (context) => getIt<EmployeeCubit>()),
+        BlocProvider(create: (context) => getIt<EmployeeCubit>()..fetchEmployeeByEmail()),
         BlocProvider(create: (context) => getIt<EmployeeAvatarCubit>()),
         BlocProvider(
             create: (context) => getIt<FetchReimbursementRequestCubit>()),

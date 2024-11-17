@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
@@ -26,7 +27,16 @@ class HomeContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const DynamicGreetingWidget(name: 'Muhammad Syehan'),
+                  BlocBuilder<EmployeeCubit, EmployeeState>(
+                    builder: (context, state) {
+                      if (state is EmployeeLoaded) {
+                        return DynamicGreetingWidget(
+                            name:
+                                'Hi, ${state.employee.firstName} ${state.employee.lastName}');
+                      }
+                      return const DynamicGreetingWidget(name: 'Hallo...');
+                    },
+                  ),
                   const SizedBox(height: 20),
                   const RollCallCard(),
                   const SizedBox(height: 20),
@@ -79,7 +89,6 @@ class HomeContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   _buildCollaguesCard(),
-                  const SizedBox(height: 60),
                 ],
               ),
             ),
@@ -150,37 +159,43 @@ class HomeContent extends StatelessWidget {
       builder: (context, state) {
         if (state.status == FetchStatus.loaded) {
           if (state.rollCalls!.isNotEmpty && state.rollCalls != null) {
-            return Column(
-              children: [
-                ...List.generate(
-                  state.rollCalls?.length ?? 0,
-                  (index) {
-                    final rollCall = state.rollCalls?[index];
-                    return Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: TSColors.secondary.s70),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          EmployeeAvatar(
-                              email: rollCall!.employee.email, radius: 24),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+            return SizedBox(
+              height: 300,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...List.generate(
+                      state.rollCalls?.length ?? 0,
+                      (index) {
+                        final rollCall = state.rollCalls?[index];
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.only(bottom: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: TSColors.secondary.s70),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
                             children: [
-                              H3('${rollCall.employee.firstName} ${rollCall.employee.lastName}'),
-                              Body1.regular(rollCall.employee.jobTitle),
+                              EmployeeAvatar(
+                                  email: rollCall!.employee.email, radius: 24),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  H3('${rollCall.employee.firstName} ${rollCall.employee.lastName}'),
+                                  Body1.regular(rollCall.employee.jobTitle),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                )
-              ],
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
             );
           }
           return const SizedBox.shrink();
@@ -209,12 +224,49 @@ class HomeContent extends StatelessWidget {
 }
 
 class RollCallCard extends StatelessWidget {
-  const RollCallCard({
-    super.key,
-  });
+  const RollCallCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<EmployeeRollCallCubit, EmployeeRollCallState>(
+      builder: (context, state) {
+        if (state.status == FetchStatus.loaded) {
+          return BlocBuilder<EmployeeCubit, EmployeeState>(
+            builder: (context, employeeState) {
+              if (employeeState is EmployeeLoaded) {
+                final employeeId = employeeState.employee.employeeId;
+                final rollCalls = state.rollCalls
+                    ?.where((e) => e.employeeId == employeeId)
+                    .toList();
+                final rollCall = rollCalls != null && rollCalls.isNotEmpty
+                    ? rollCalls.first
+                    : null;
+
+                final isNotRollCalled = rollCall == null;
+                final displayDateTime = rollCall != null
+                    ? DateTime.parse(rollCall.timeIn)
+                    : DateTime.now();
+
+                return _buildCard(
+                  imagePath: isNotRollCalled
+                      ? Assets.images.locationDynamicColor.path
+                      : Assets.images.tickDynamicColor.path,
+                  dateTime: displayDateTime,
+                );
+              }
+              return _buildDefaultCard();
+            },
+          );
+        }
+        return _buildDefaultCard();
+      },
+    );
+  }
+
+  Widget _buildCard({required String imagePath, required DateTime dateTime}) {
+    final formattedDate = DateFormat('EEEE, dd MMM yyyy').format(dateTime);
+    final formattedTime = DateFormat('hh:mm a').format(dateTime);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -223,18 +275,24 @@ class RollCallCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(Assets.images.locationDynamicColor.path,
-              height: 64, width: 64),
+          Image.asset(imagePath, height: 64, width: 64),
           const SizedBox(width: 21),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              H3('Wednesday, 23 Jan 2024'),
-              H3('10:20 pm'),
+              H3(formattedDate),
+              H3(formattedTime),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDefaultCard() {
+    return _buildCard(
+      imagePath: Assets.images.locationDynamicColor.path,
+      dateTime: DateTime.now(),
     );
   }
 }
