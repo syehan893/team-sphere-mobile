@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:team_sphere_mobile/app/themes/colors.dart';
+import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 import 'package:team_sphere_mobile/views/cubits/cubit.dart';
 import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
@@ -103,25 +106,44 @@ class LeaveCircle extends StatelessWidget {
     return SizedBox(
       width: 200,
       height: 200,
-      child: Center(
-        child: PieChart(
-          PieChartData(
-            sections: _getChartSections(),
-            borderData: FlBorderData(show: false),
-            centerSpaceRadius: 40,
-          ),
-        ),
+      child: BlocBuilder<FetchLeaveRequestCubit, FetchLeaveRequestState>(
+        builder: (context, state) {
+          if (state.employeeFetchStatus == FetchStatus.loaded) {
+            final annualData = state.leaveRequests
+                ?.where((e) => e.leaveType == 'Annual Leave')
+                .length;
+            final sickData =
+                state.leaveRequests?.where((e) => e.leaveType == 'Sick Leave').length;
+            final specialData = state.leaveRequests
+                ?.where((e) => e.leaveType == 'Special Leave')
+                .length;
+            return Center(
+              child: PieChart(
+                PieChartData(
+                  sections: _getChartSections(
+                    {
+                      'Annual': annualData,
+                      'Sick': sickData,
+                      'Special': specialData,
+                    },
+                  ),
+                  borderData: FlBorderData(show: false),
+                  centerSpaceRadius: 40,
+                ),
+              ),
+            );
+          }
+          return Center(
+              child: LoadingAnimationWidget.progressiveDots(
+            color: TSColors.primary.p100,
+            size: 50,
+          ));
+        },
       ),
     );
   }
 
-  List<PieChartSectionData> _getChartSections() {
-    final data = {
-      'Annual': 7,
-      'Sick': 5,
-      'Special': 1,
-    };
-
+  List<PieChartSectionData> _getChartSections(Map data) {
     return data.entries.map((entry) {
       final title = entry.key;
       final value = entry.value;

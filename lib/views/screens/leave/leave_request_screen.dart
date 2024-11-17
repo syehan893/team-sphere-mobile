@@ -67,7 +67,7 @@ class LeaveRequestContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     _buildDatePicker(
-                      Key('statr-date-${state.leaveRequest.startDate}'),
+                      Key('start-date-${state.leaveRequest.startDate.toIso8601String()}'),
                       context,
                       'Start Date',
                       state.leaveRequest.startDate,
@@ -77,7 +77,7 @@ class LeaveRequestContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     _buildDatePicker(
-                      Key('statr-date-${state.leaveRequest.endDate}'),
+                      Key('end-date-${state.leaveRequest.endDate.toIso8601String()}'),
                       context,
                       'End Date',
                       state.leaveRequest.endDate,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/core/constant/strings.dart';
 import 'package:team_sphere_mobile/core/enums/fetch_status.dart';
 
@@ -63,11 +64,43 @@ class PendingRequestCard extends StatelessWidget {
   final String initials;
   final String date;
 
-  const PendingRequestCard(
-      {super.key,
-      required this.name,
-      required this.initials,
-      required this.date});
+  const PendingRequestCard({
+    super.key,
+    required this.name,
+    required this.initials,
+    required this.date,
+  });
+
+  void _showConfirmationDialog(
+      BuildContext context, String actionType, VoidCallback onConfirm) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: TSColors.background.b400,
+          title: Text('Confirm $actionType'),
+          content: Text(
+            'Are you sure you want to $actionType this request?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Body1.regular('Cancel',
+                  fontSize: 14, color: TSColors.alert.red700),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onConfirm();
+              },
+              child: Body1.regular('Confirm',
+                  fontSize: 14, color: TSColors.alert.green700),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,31 +125,50 @@ class PendingRequestCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Body1.bold(name,
-                      fontSize: 14, overflow: TextOverflow.ellipsis),
+                  Body1.bold(
+                    name,
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   const SizedBox(height: 6),
                   Body1.regular(date),
                 ],
               ),
             ),
-            Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                color: TSColors.alert.red700,
-                borderRadius: BorderRadius.circular(50),
+            GestureDetector(
+              onTap: () {
+                _showConfirmationDialog(context, 'Reject', () {
+                  // TODO: Add reject logic here
+                  print('Request rejected');
+                });
+              },
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: TSColors.alert.red700,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Icon(Icons.close, color: Colors.white),
               ),
-              child: const Icon(Icons.close, color: Colors.white),
             ),
             const SizedBox(width: 12),
-            Container(
-              width: 28,
-              height: 28,
-              decoration: BoxDecoration(
-                color: TSColors.alert.green700,
-                borderRadius: BorderRadius.circular(50),
+            GestureDetector(
+              onTap: () {
+                _showConfirmationDialog(context, 'Approve', () {
+                  // TODO: Add approve logic here
+                  print('Request approved');
+                });
+              },
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: TSColors.alert.green700,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Icon(Icons.check, color: Colors.white),
               ),
-              child: const Icon(Icons.check, color: Colors.white),
             ),
           ],
         ),
