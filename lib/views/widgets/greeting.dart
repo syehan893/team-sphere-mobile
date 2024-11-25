@@ -47,11 +47,11 @@ class DynamicGreetingWidget extends StatelessWidget {
             ),
           ],
         ),
-        CircleAvatar(
-          backgroundColor: TSColors.secondary.s30,
-          child: Image.asset(Assets.icons.notifications.path,
-              color: TSColors.primary.p100, height: 20, width: 20),
-        ),
+        // CircleAvatar(
+        //   backgroundColor: TSColors.secondary.s30,
+        //   child: Image.asset(Assets.icons.notifications.path,
+        //       color: TSColors.primary.p100, height: 20, width: 20),
+        // ),
       ],
     );
   }

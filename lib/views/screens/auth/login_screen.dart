@@ -43,15 +43,21 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             );
           }
+          if (state.status == AuthStatus.unauthenticated) {
+            Navigator.of(context).pop();
+            CustomToast.showToast(
+                context,
+                duration: const Duration(seconds: 5),
+                'Login Failed, Please check your email and password',
+                TSColors.alert.red700);
+          }
           if (state.status == AuthStatus.authenticated) {
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Authentication successful')),
-            );
-          } else if (state.error != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error?.message ?? '')),
-            );
+            CustomToast.showToast(
+                context,
+                duration: const Duration(seconds: 5),
+                'Login successful',
+                TSColors.alert.green700);
           }
         },
         builder: (context, state) {

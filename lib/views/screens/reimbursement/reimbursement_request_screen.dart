@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/core/enums/creation_status.dart';
+import 'package:team_sphere_mobile/core/helpers/formater.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
 
 import '../../cubits/cubit.dart';
@@ -69,9 +70,9 @@ class ReimbursementRequestContent extends StatelessWidget {
             builder: (context, employeeState) {
               if (employeeState is EmployeeLoaded) {
                 context.read<CreateReimbursementRequestCubit>().updateField(
-                    employeeId: employeeState.employee.employeeId,
-                    managerId: employeeState.employee.managerId,
-                );
+                      employeeId: employeeState.employee.employeeId,
+                      managerId: employeeState.employee.managerId,
+                    );
               }
               return Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -90,8 +91,11 @@ class ReimbursementRequestContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     TextInput(
-                      onChanged: (value) =>
-                          cubit.updateField(amount: int.parse(value ?? '0')),
+                      inputFormatters: [NumberFormatter()],
+                      onChanged: (value) {
+                        String cleanValue = (value ?? '').replaceAll('.', '');
+                        cubit.updateField(amount: int.parse(cleanValue));
+                      },
                       label: 'Amount',
                       keyboardType: TextInputType.number,
                     ),
