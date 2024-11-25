@@ -36,6 +36,7 @@ import '../../data/repositories/reimbursement_repository.dart' as _i555;
 import '../../data/repositories/reimbursements_storage_repository.dart'
     as _i422;
 import '../../views/cubits/avatar_cubit.dart' as _i89;
+import '../../views/cubits/employee_creation_cubit.dart' as _i401;
 import '../../views/cubits/employee_cubit.dart' as _i225;
 import '../../views/cubits/employee_roll_call_cubit.dart' as _i103;
 import '../../views/cubits/home_cubit.dart' as _i934;
@@ -126,6 +127,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i363.FetchReimbursementRequestCubit>(() =>
         _i363.FetchReimbursementRequestCubit(
             gh<_i388.ReimbursementRequestRepository>()));
+    gh.factory<_i401.UpdateEmployeeCubit>(() => _i401.UpdateEmployeeCubit(
+          gh<_i388.EmployeeRepository>(),
+          gh<_i388.EmployeeStorageRepository>(),
+        ));
     gh.factory<_i103.EmployeeRollCallCubit>(() =>
         _i103.EmployeeRollCallCubit(gh<_i388.EmployeeRollCallRepository>()));
     gh.factory<_i528.CreateLeaveRequestCubit>(() =>

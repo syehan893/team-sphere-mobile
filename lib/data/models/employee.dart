@@ -43,18 +43,62 @@ class Employee extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'employee_id': employeeId,
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'phone_number': phoneNumber,
+      'hire_date': hireDate,
+      'job_title': jobTitle,
+      'department_id': departmentId,
+      'manager_id': managerId,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+
+  Employee copyWith({
+    String? employeeId,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phoneNumber,
+    String? hireDate,
+    String? jobTitle,
+    String? departmentId,
+    String? managerId,
+    String? createdAt,
+    String? updatedAt,
+  }) {
+    return Employee(
+      employeeId: employeeId ?? this.employeeId,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      hireDate: hireDate ?? this.hireDate,
+      jobTitle: jobTitle ?? this.jobTitle,
+      departmentId: departmentId ?? this.departmentId,
+      managerId: managerId ?? this.managerId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   @override
   List<Object?> get props => [
-        employeeId,
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        hireDate,
-        jobTitle,
-        departmentId,
-        managerId,
-        createdAt,
-        updatedAt,
-      ];
+    employeeId,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    hireDate,
+    jobTitle,
+    departmentId,
+    managerId,
+    createdAt,
+    updatedAt,
+  ];
 }

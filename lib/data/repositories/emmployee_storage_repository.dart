@@ -19,9 +19,17 @@ class EmployeeStorageRepository {
     }
   }
 
+  Future<void> deleteEmployeeAvatar(String email) async {
+    try {
+       await _storageDatasource.deleteFile('employee_profile', ['$email.jpg']);
+    } catch (e) {
+      logger.e('Error deleting employee avatar URL: $e');
+    }
+  }
+
   Future<bool> uploadEmployeeAvatar(String email, Uint8List fileBytes) async {
     try {
-      await _storageDatasource.uploadFile('employee', email, fileBytes, contentType: 'image/jpeg');
+      await _storageDatasource.uploadFile('employee_profile', '$email.jpg', fileBytes, contentType: 'image/jpeg');
       return true;
     } catch (e) {
       logger.e('Error uploading employee avatar: $e');

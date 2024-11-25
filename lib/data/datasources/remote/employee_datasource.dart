@@ -18,4 +18,9 @@ class EmployeeDataSource {
       throw Exception('Failed to fetch employee data');
     }
   }
+
+  Future<void> updateEmployee(Employee employee) async {
+    await _apiClient.put('/employees/${employee.employeeId}',
+        employee.toJson());
+  }
 }

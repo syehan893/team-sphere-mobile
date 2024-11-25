@@ -14,27 +14,36 @@ class EmployeeAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<EmployeeAvatarCubit>()..loadAvatar(email),
-      child: BlocBuilder<EmployeeAvatarCubit, EmployeeAvatarState>(
-        builder: (context, state) {
-          if (state is EmployeeAvatarLoaded) {
-            return CircleAvatar(
-              radius: radius,
-              child: ClipOval(
-                child: Image.network(
-                  state.avatarUrl,
-                  fit: BoxFit.cover,
-                  width: radius * 2,
-                  height: radius * 2,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildFallbackAvatar();
-                  },
-                ),
-              ),
-            );
+      create: (context) =>
+      getIt<EmployeeAvatarCubit>()
+        ..loadAvatar(email),
+      child: BlocListener<EmployeeCubit, EmployeeState>(
+        listener: (context, state) {
+          if (state is EmployeeLoaded) {
+            context.read<EmployeeAvatarCubit>().loadAvatar(email);
           }
-          return _buildFallbackAvatar();
         },
+        child: BlocBuilder<EmployeeAvatarCubit, EmployeeAvatarState>(
+          builder: (context, state) {
+            if (state is EmployeeAvatarLoaded) {
+              return CircleAvatar(
+                radius: radius,
+                child: ClipOval(
+                  child: Image.network(
+                    state.avatarUrl,
+                    fit: BoxFit.cover,
+                    width: radius * 2,
+                    height: radius * 2,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _buildFallbackAvatar();
+                    },
+                  ),
+                ),
+              );
+            }
+            return _buildFallbackAvatar();
+          },
+        ),
       ),
     );
   }

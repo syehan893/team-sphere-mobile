@@ -14,4 +14,8 @@ class EmployeeRepository {
     String? email = await _userLocalDatasource.getUser();
     return _dataSource.getEmployeeByEmail(email ?? CommonStrings.emptyString);
   }
+
+  Future<void> updateEmployee(Employee employee) {
+    return _dataSource.updateEmployee(employee);
+  }
 }

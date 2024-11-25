@@ -5,6 +5,7 @@ import 'package:team_sphere_mobile/views/screens/screen.dart';
 
 import '../../views/screens/profile/privacy_and_policy.dart';
 import '../../views/screens/profile/term_and_condition.dart';
+import '../../views/screens/profile/update_profile_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
@@ -77,6 +78,12 @@ final GoRouter router = GoRouter(
           path: 'policy',
           builder: (BuildContext context, GoRouterState state) {
             return const PrivacyAndPolicyScreen();
+          },
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (BuildContext context, GoRouterState state) {
+            return const UpdateProfileScreen();
           },
         ),
       ],

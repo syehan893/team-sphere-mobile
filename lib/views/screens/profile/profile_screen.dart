@@ -38,7 +38,9 @@ class ProfileScreen extends StatelessWidget {
                     Body1.regular(state.employee.jobTitle),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.go('/profile');
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: TSColors.primary.p100,
                         minimumSize: const Size(double.infinity, 50),
