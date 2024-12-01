@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:team_sphere_mobile/app/themes/colors.dart';
 import 'package:team_sphere_mobile/app/themes/themes.dart';
-import 'package:team_sphere_mobile/gen/assets.gen.dart';
 
 class DynamicGreetingWidget extends StatelessWidget {
   final String name;

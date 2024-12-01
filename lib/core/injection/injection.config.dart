@@ -23,6 +23,8 @@ import '../../data/datasources/remote/employee_datasource.dart' as _i319;
 import '../../data/datasources/remote/employee_roll_call_datasource.dart'
     as _i316;
 import '../../data/datasources/remote/leave_datasource.dart' as _i917;
+import '../../data/datasources/remote/news_datasource.dart' as _i353;
+import '../../data/datasources/remote/organization_datasource.dart' as _i649;
 import '../../data/datasources/remote/reimbursement_datasource.dart' as _i529;
 import '../../data/datasources/remote/supabase_storage_datasource.dart'
     as _i330;
@@ -32,6 +34,8 @@ import '../../data/repositories/emmployee_storage_repository.dart' as _i683;
 import '../../data/repositories/employee_repository.dart' as _i451;
 import '../../data/repositories/employee_roll_call_repository.dart' as _i565;
 import '../../data/repositories/leave_repository.dart' as _i672;
+import '../../data/repositories/news_repository.dart' as _i594;
+import '../../data/repositories/organization_repository.dart' as _i9;
 import '../../data/repositories/reimbursement_repository.dart' as _i555;
 import '../../data/repositories/reimbursements_storage_repository.dart'
     as _i422;
@@ -43,6 +47,8 @@ import '../../views/cubits/home_cubit.dart' as _i934;
 import '../../views/cubits/leave_creation_cubit.dart' as _i528;
 import '../../views/cubits/leave_cubit.dart' as _i47;
 import '../../views/cubits/login_cubit.dart' as _i35;
+import '../../views/cubits/news_cubit.dart' as _i752;
+import '../../views/cubits/organization_cubit.dart' as _i679;
 import '../../views/cubits/reimbursement_creation_cubit.dart' as _i955;
 import '../../views/cubits/reimbursement_cubit.dart' as _i363;
 import '../network/api_client.dart' as _i557;
@@ -64,23 +70,23 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.factory<_i934.HomeCubit>(() => _i934.HomeCubit());
     gh.singleton<_i454.SupabaseClient>(() => registerModule.supabaseClient);
-    gh.singleton<_i207.SessionManager>(() => _i207.SessionManager());
     gh.singleton<_i533.UserLocalDatasource>(() => _i533.UserLocalDatasource());
+    gh.singleton<_i207.SessionManager>(() => _i207.SessionManager());
     await gh.lazySingletonAsync<_i460.SharedPreferences>(
       () => registerModule.sharedPreferences,
       preResolve: true,
     );
     gh.lazySingleton<_i895.Connectivity>(() => registerModule.connectivity);
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
-    gh.factory<_i330.SupabaseStorageDatasource>(
-        () => _i330.SupabaseStorageDatasource(gh<_i454.SupabaseClient>()));
     gh.factory<_i642.SupabaseAuthDatasource>(
         () => _i642.SupabaseAuthDatasource(gh<_i454.SupabaseClient>()));
-    gh.factory<_i683.EmployeeStorageRepository>(() =>
-        _i683.EmployeeStorageRepository(gh<_i388.SupabaseStorageDatasource>()));
+    gh.factory<_i330.SupabaseStorageDatasource>(
+        () => _i330.SupabaseStorageDatasource(gh<_i454.SupabaseClient>()));
     gh.factory<_i422.ReimbursementStorageRepository>(() =>
         _i422.ReimbursementStorageRepository(
             gh<_i388.SupabaseStorageDatasource>()));
+    gh.factory<_i683.EmployeeStorageRepository>(() =>
+        _i683.EmployeeStorageRepository(gh<_i388.SupabaseStorageDatasource>()));
     gh.singleton<_i908.AuthService>(() => _i908.AuthService(
           gh<_i454.SupabaseClient>(),
           gh<_i905.SessionManager>(),
@@ -97,17 +103,23 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i557.ApiClient(gh<_i908.AuthService>()));
     gh.factory<_i35.AuthCubit>(
         () => _i35.AuthCubit(gh<_i388.AuthRepository>()));
-    gh.factory<_i319.EmployeeDataSource>(
-        () => _i319.EmployeeDataSource(gh<_i557.ApiClient>()));
-    gh.factory<_i316.EmployeeRollCallDataSource>(
-        () => _i316.EmployeeRollCallDataSource(gh<_i557.ApiClient>()));
+    gh.factory<_i353.NewsDataSource>(
+        () => _i353.NewsDataSource(gh<_i557.ApiClient>()));
     gh.factory<_i917.LeaveRequestDataSource>(
         () => _i917.LeaveRequestDataSource(gh<_i557.ApiClient>()));
     gh.factory<_i529.ReimbursementRequestDataSource>(
         () => _i529.ReimbursementRequestDataSource(gh<_i557.ApiClient>()));
+    gh.factory<_i319.EmployeeDataSource>(
+        () => _i319.EmployeeDataSource(gh<_i557.ApiClient>()));
+    gh.factory<_i316.EmployeeRollCallDataSource>(
+        () => _i316.EmployeeRollCallDataSource(gh<_i557.ApiClient>()));
+    gh.factory<_i649.OrganizationDataSource>(
+        () => _i649.OrganizationDataSource(gh<_i557.ApiClient>()));
     gh.factory<_i555.ReimbursementRequestRepository>(() =>
         _i555.ReimbursementRequestRepository(
             gh<_i388.ReimbursementRequestDataSource>()));
+    gh.factory<_i9.OrganizationRepository>(
+        () => _i9.OrganizationRepository(gh<_i388.OrganizationDataSource>()));
     gh.factory<_i955.CreateReimbursementRequestCubit>(
         () => _i955.CreateReimbursementRequestCubit(
               gh<_i388.ReimbursementRequestRepository>(),
@@ -119,6 +131,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i388.EmployeeDataSource>(),
           gh<_i388.UserLocalDatasource>(),
         ));
+    gh.factory<_i594.NewsRepository>(
+        () => _i594.NewsRepository(gh<_i388.NewsDataSource>()));
+    gh.factory<_i679.DepartmentCubit>(
+        () => _i679.DepartmentCubit(gh<_i388.OrganizationRepository>()));
     gh.factory<_i565.EmployeeRollCallRepository>(() =>
         _i565.EmployeeRollCallRepository(
             gh<_i388.EmployeeRollCallDataSource>()));
@@ -137,6 +153,8 @@ extension GetItInjectableX on _i174.GetIt {
         _i528.CreateLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
     gh.factory<_i47.FetchLeaveRequestCubit>(
         () => _i47.FetchLeaveRequestCubit(gh<_i388.LeaveRequestRepository>()));
+    gh.factory<_i752.NewsCubit>(
+        () => _i752.NewsCubit(gh<_i388.NewsRepository>()));
     return this;
   }
 }

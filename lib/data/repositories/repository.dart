@@ -5,3 +5,5 @@ export './leave_repository.dart';
 export './reimbursement_repository.dart';
 export './emmployee_storage_repository.dart';
 export './reimbursements_storage_repository.dart';
+export './organization_repository.dart';
+export './news_repository.dart';
