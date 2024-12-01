@@ -52,13 +52,14 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.white, fontSize: 14),
                     ),
                     const SizedBox(height: 24),
-                    _buildOptionTile(Icons.person, 'My Profile', () {}),
-                    _buildOptionTile(
-                        Icons.description, 'Terms & Condition', () {
-                          context.go('/terms');
+                    _buildOptionTile(Icons.person, 'My Profile', () {
+                      context.go('/profile');
                     }),
-                    _buildOptionTile(
-                        Icons.privacy_tip, 'Privacy Policy', () {
+                    _buildOptionTile(Icons.description, 'Terms & Condition',
+                        () {
+                      context.go('/terms');
+                    }),
+                    _buildOptionTile(Icons.privacy_tip, 'Privacy Policy', () {
                       context.go('/policy');
                     }),
                     _buildOptionTile(Icons.logout, 'Logout', () {

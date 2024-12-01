@@ -21,23 +21,29 @@ class HomeScreenState extends State<HomeScreen> {
   static const Map<HomeNavBar, String?> titles = {
     HomeNavBar.home: null,
     HomeNavBar.transaction: 'Transaction',
-    HomeNavBar.task: 'Task(s)',
+    HomeNavBar.team: 'My Team',
     HomeNavBar.user: null,
   };
 
   static const List<HomeNavBar> navBars = [
     HomeNavBar.home,
     HomeNavBar.transaction,
-    HomeNavBar.task,
+    HomeNavBar.team,
     HomeNavBar.user,
   ];
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeContent(),
-    TransactionScreen(),
-    OrganizationStructureScreen(),
-    ProfileScreen(),
-  ];
+  static List<Widget> widgetOptions(Function onMemberTap) {
+    return <Widget>[
+      HomeContent(
+        onMemberTap: () {
+          onMemberTap();
+        },
+      ),
+      const TransactionScreen(),
+      const OrganizationStructureScreen(),
+      const ProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,7 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
                 BottomNavigationBarItem(
                   icon: mapNavBarIcon(
-                      state, Assets.icons.hierarchy.path, HomeNavBar.task),
+                      state, Assets.icons.hierarchy.path, HomeNavBar.team),
                   label: 'My Team',
                 ),
                 BottomNavigationBarItem(
@@ -104,7 +110,16 @@ class HomeScreenState extends State<HomeScreen> {
             body: PageView(
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
-              children: _widgetOptions,
+              children: widgetOptions(
+                () {
+                  _pageController.animateToPage(
+                  2,
+                  duration: AnimationDuration.milis300,
+                  curve: Curves.easeInOut,
+                );
+                context.read<HomeCubit>().changeNavBar(navBars[2]);
+                }
+              ),
             ),
           );
         },

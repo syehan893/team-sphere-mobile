@@ -15,7 +15,7 @@ class NewsDetailScreen extends StatelessWidget {
       },
       useBackButton: true,
       body: SfPdfViewer.network(
-        "https://gqrrkswdhnhahfvgjzkj.supabase.co/storage/v1/object/public/company_news/one-long-page.pdf",
+        "https://gqrrkswdhnhahfvgjzkj.supabase.co/storage/v1/object/public/company_news/news-content-2.pdf",
         enableDoubleTapZooming: true,
         enableTextSelection: true,
         pageSpacing: 0,

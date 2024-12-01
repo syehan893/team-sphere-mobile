@@ -14,13 +14,14 @@ import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 import '../../cubits/cubit.dart';
 
 class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
+  final VoidCallback onMemberTap;
+  const HomeContent({super.key, required this.onMemberTap});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top:16.0, left:16.0, right:16.0),
         child: Stack(
           children: [
             SingleChildScrollView(
@@ -55,8 +56,8 @@ class HomeContent extends StatelessWidget {
                           Assets.icons.dollarCoin.path, 'Reimburse', () {
                         context.go('/reimburse');
                       }),
-                      _buildFeatureIcon(
-                          Assets.icons.userMultipleGroup.path, 'Member', () {}),
+                      _buildFeatureIcon(Assets.icons.userMultipleGroup.path,
+                          'My Team', onMemberTap),
                       _buildFeatureIcon(
                           Assets.icons.newsPaper.path, 'News', () {}),
                     ],

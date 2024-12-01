@@ -5,6 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:team_sphere_mobile/core/enums/creation_status.dart';
 import 'package:team_sphere_mobile/core/injection/injection.dart';
 import 'package:team_sphere_mobile/views/widgets/base_layout.dart';
+import 'package:team_sphere_mobile/views/widgets/widgets.dart';
 
 import '../../../app/themes/colors.dart';
 import '../../cubits/cubit.dart';
@@ -48,7 +49,7 @@ class UpdateEmployeeContent extends StatelessWidget {
         context.read<HomeCubit>().changeNavBar(HomeNavBar.home);
       },
       body: BlocConsumer<UpdateEmployeeCubit, UpdateEmployeeState>(
-        listener: (context, state)  {
+        listener: (context, state) {
           if (state.status == CreationStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Employee updated successfully')),
@@ -109,10 +110,10 @@ class UpdateEmployeeContent extends StatelessWidget {
                       .updatePhoneNumber(value),
                 ),
                 const Spacer(),
-                ElevatedButton(
-                  onPressed: () =>
+                Button(
+                  title: 'Submit',
+                  onTap: () =>
                       context.read<UpdateEmployeeCubit>().saveChanges(),
-                  child: const Text('Update'),
                 ),
               ],
             ),

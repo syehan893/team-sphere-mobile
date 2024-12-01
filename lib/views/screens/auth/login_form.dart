@@ -42,7 +42,7 @@ class LoginForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (Util.falsyChecker(value)) {
-                return 'Email is not valid';
+                return 'Email cannot be empty';
               }
               return null;
             },
@@ -54,6 +54,12 @@ class LoginForm extends StatelessWidget {
             label: 'Password',
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
+            validator: (value) {
+              if ((value?.length ?? 0) < 8) {
+                return 'Password at least 8 character';
+              }
+              return null;
+            },
             autovalidateMode: AutovalidateMode.onUserInteraction,
             hintText: 'Password',
           ),

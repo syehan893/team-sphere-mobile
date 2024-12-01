@@ -167,7 +167,7 @@ class ReimbursementRequestContent extends StatelessWidget {
           label: 'Reimbursement Type',
           initialValue: state.reimbursementRequest.expenseType,
           onChanged: (newValue) {
-            context.read<CreateLeaveRequestCubit>().updateLeaveType(newValue!);
+            cubit.updateField(type: newValue);
           },
           dropdownOptions: const ['Software', 'Hardware', 'Travel', 'Other'],
         );
